@@ -35,6 +35,7 @@
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
                                                         </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 февраля 2024" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHu-GB-46M" userLabel="Date Label">
@@ -62,6 +63,12 @@
                                                 <constraint firstItem="jHF-UA-WY8" firstAttribute="leading" secondItem="OfK-K4-bCl" secondAttribute="leading" constant="16" id="d58-HQ-KUX"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="jHF-UA-WY8" id="1GZ-7H-qm2"/>
+                                            <outlet property="dateLabel" destination="RHu-GB-46M" id="L6w-7M-HXH"/>
+                                            <outlet property="likeButton" destination="5NW-rI-4xO" id="vH7-zj-NVn"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
