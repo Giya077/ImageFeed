@@ -50,7 +50,7 @@
                                                     <state key="normal" image="Active"/>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" name="YP Black"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="jHF-UA-WY8" firstAttribute="bottom" secondItem="RHu-GB-46M" secondAttribute="bottom" constant="8" id="5pD-Og-kus"/>
                                                 <constraint firstItem="RHu-GB-46M" firstAttribute="leading" secondItem="jHF-UA-WY8" secondAttribute="leading" constant="8" id="AWs-Qb-W86"/>
