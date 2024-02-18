@@ -68,6 +68,7 @@
                                             <outlet property="cellImage" destination="jHF-UA-WY8" id="1GZ-7H-qm2"/>
                                             <outlet property="dateLabel" destination="RHu-GB-46M" id="L6w-7M-HXH"/>
                                             <outlet property="likeButton" destination="5NW-rI-4xO" id="vH7-zj-NVn"/>
+                                            <segue destination="1Yh-sS-IqJ" kind="show" id="No2-b2-1Wr"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -86,14 +87,14 @@
                             <constraint firstAttribute="trailing" secondItem="zwl-Zj-2zH" secondAttribute="trailing" id="rEs-UA-ILE"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="We9-PU-Nke" userLabel="Tab Bar Item"/>
+                    <navigationItem key="navigationItem" id="9yN-uP-xCf"/>
                     <connections>
                         <outlet property="tableView" destination="zwl-Zj-2zH" id="aH1-Ou-r8l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1346" y="-686"/>
+            <point key="canvasLocation" x="2272.5190839694656" y="-686.61971830985919"/>
         </scene>
         <!--Profile-->
         <scene sceneID="vnO-ZK-wQE">
@@ -162,7 +163,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="vCk-lh-NvQ" userLabel="Tab Bar Item"/>
                     <connections>
-                        <outlet property="ProfileViewController" destination="yvj-7V-TiB" id="u5C-Qy-hM5"/>
                         <outlet property="avatarImage" destination="26o-s6-67S" id="ERc-Pp-xvY"/>
                         <outlet property="descriptionLabel" destination="PlC-tw-0JS" id="7gM-bO-gqj"/>
                         <outlet property="loginLabel" destination="DZS-R7-S8Z" id="jAt-MS-NAX"/>
@@ -189,13 +189,67 @@
                         </tabBarAppearance>
                     </tabBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="cP1-AI-Lct"/>
+                        <segue destination="vRu-rl-2eH" kind="relationship" relationship="viewControllers" id="cP1-AI-Lct"/>
                         <segue destination="k5w-9b-5gC" kind="relationship" relationship="viewControllers" id="LhL-Lk-gOv"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fst-yC-eeK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137" y="-354"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xDb-cW-vA5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vRu-rl-2eH" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="We9-PU-Nke" userLabel="Tab Bar Item"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="owD-Uf-gFx">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" name="YP White"/>
+                        <color key="barTintColor" name="YP White"/>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="YP Black"/>
+                        </navigationBarAppearance>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="qqL-3e-zEU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mx0-AN-TjC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1345.8015267175572" y="-686.61971830985919"/>
+        </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="2Sd-Ds-plZ">
+            <objects>
+                <viewController id="1Yh-sS-IqJ" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Mjo-LK-eY3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="PEh-4T-Btl">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="nua-5R-Rpn"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="nua-5R-Rpn" firstAttribute="trailing" secondItem="PEh-4T-Btl" secondAttribute="trailing" id="Ydw-U8-4Jj"/>
+                            <constraint firstItem="PEh-4T-Btl" firstAttribute="leading" secondItem="nua-5R-Rpn" secondAttribute="leading" id="hnh-jL-G1s"/>
+                            <constraint firstItem="PEh-4T-Btl" firstAttribute="top" secondItem="nua-5R-Rpn" secondAttribute="top" id="hsu-vM-fVC"/>
+                            <constraint firstItem="nua-5R-Rpn" firstAttribute="bottom" secondItem="PEh-4T-Btl" secondAttribute="bottom" id="oFM-Jg-dtT"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="xe5-xh-sU3"/>
+                    <connections>
+                        <outlet property="imageView" destination="PEh-4T-Btl" id="sN2-wA-69M"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="90t-NS-zYI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3434" y="-687"/>
         </scene>
     </scenes>
     <resources>
