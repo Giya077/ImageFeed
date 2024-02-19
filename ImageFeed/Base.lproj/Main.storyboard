@@ -68,7 +68,6 @@
                                             <outlet property="cellImage" destination="jHF-UA-WY8" id="1GZ-7H-qm2"/>
                                             <outlet property="dateLabel" destination="RHu-GB-46M" id="L6w-7M-HXH"/>
                                             <outlet property="likeButton" destination="5NW-rI-4xO" id="vH7-zj-NVn"/>
-                                            <segue destination="1Yh-sS-IqJ" kind="show" id="No2-b2-1Wr"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -90,6 +89,7 @@
                     <navigationItem key="navigationItem" id="9yN-uP-xCf"/>
                     <connections>
                         <outlet property="tableView" destination="zwl-Zj-2zH" id="aH1-Ou-r8l"/>
+                        <segue destination="1Yh-sS-IqJ" kind="show" identifier="ShowSingleImage" id="Jpx-5p-HVJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -229,7 +229,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="PEh-4T-Btl">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="PEh-4T-Btl">
                                 <rect key="frame" x="0.0" y="103" width="393" height="666"/>
                             </imageView>
                         </subviews>
