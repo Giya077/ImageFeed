@@ -248,6 +248,9 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="Sharing"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="1Yh-sS-IqJ" eventType="touchUpInside" id="b8i-FN-lGn"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nua-5R-Rpn"/>
@@ -267,6 +270,7 @@
                     <connections>
                         <outlet property="imageView" destination="PEh-4T-Btl" id="sN2-wA-69M"/>
                         <outlet property="scrollView" destination="XoU-vy-tWg" id="2s8-lb-tXB"/>
+                        <outlet property="shareButton" destination="2QT-69-sf6" id="Pg9-mu-cKT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="90t-NS-zYI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

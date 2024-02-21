@@ -31,6 +31,7 @@ final class SingleImageViewController: UIViewController {
             imageView.image = image
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
+            centerImageInfoScrollView()
     }
     
     @IBAction private func didTapBackButton() {
@@ -38,6 +39,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
+        guard let image = imageView.image else { return }
         let share = UIActivityViewController(
             activityItems: [image],
             applicationActivities: nil)
@@ -63,8 +65,34 @@ final class SingleImageViewController: UIViewController {
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? { // Возвращаем imageView для масштабирования в scrollView
         imageView
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) { // Вызывается после окончания масштабирования, центрируем изображение
         
     }
+    
+    // Центрируем изображение в scrollView
+    private func centerImageInfoScrollView() {
+        guard let image = imageView.image else { return }
+        
+        let imageViewSize = imageView.frame.size
+        let scrollViewSize = scrollView.bounds.size
+        
+        var verticalPadding: CGFloat = 0
+        var horizontalPadding: CGFloat = 0
+        
+        if imageViewSize.width < scrollViewSize.width {
+            horizontalPadding = (scrollViewSize.width - imageViewSize.width) / 2
+        }
+        
+        if imageViewSize.height < scrollViewSize.height {
+            verticalPadding = (scrollViewSize.height - imageViewSize.height) / 2
+        }
+        
+        scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
+    }
 }
+
+
