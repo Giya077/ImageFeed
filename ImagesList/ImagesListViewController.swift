@@ -37,8 +37,7 @@ final class ImagesListViewController: UIViewController {
             }
             
             let image = UIImage(named: photosName[indexPath.row]) // Получаем по индексу название картинки и саму картинку
-            _ = viewController.view // hack
-            viewController.imageView.image = image // Передаём эту картинку в imageView
+            viewController.image = image // Передаём эту картинку в imageView
         } else {
                 super.prepare(for: segue, sender: sender)
             }
