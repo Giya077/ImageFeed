@@ -23,6 +23,8 @@ final class SingleImageViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var backButton: UIButton!
+    
         override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,6 +35,20 @@ final class SingleImageViewController: UIViewController {
             imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
             centerImageInfoScrollView()
+            
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(imageView) // Добавляем imageView на view контроллера
+            view.bringSubviewToFront(shareButton)
+            view.bringSubviewToFront(backButton)
+
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: view.topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            
+
     }
     
     @IBAction private func didTapBackButton() {
@@ -76,7 +92,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
     
     // Центрируем изображение в scrollView
     private func centerImageInfoScrollView() {
-        guard let image = imageView.image else { return }
+        guard imageView.image != nil else { return }
         
         let imageViewSize = imageView.frame.size
         let scrollViewSize = scrollView.bounds.size

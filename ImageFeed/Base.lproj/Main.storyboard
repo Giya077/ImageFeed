@@ -204,6 +204,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="xe5-xh-sU3"/>
                     <connections>
+                        <outlet property="backButton" destination="XvV-cl-a8i" id="Vk5-pf-fj2"/>
                         <outlet property="imageView" destination="PEh-4T-Btl" id="sN2-wA-69M"/>
                         <outlet property="scrollView" destination="XoU-vy-tWg" id="2s8-lb-tXB"/>
                         <outlet property="shareButton" destination="2QT-69-sf6" id="Pg9-mu-cKT"/>

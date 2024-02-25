@@ -72,7 +72,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(self.didTapButton))
         
-        logoutButton.tintColor = .red
+        logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
         
@@ -85,6 +85,7 @@ final class ProfileViewController: UIViewController {
         for view in view.subviews {
             if view is UILabel {
                 view.removeFromSuperview()
+                
             }
         }
     }
