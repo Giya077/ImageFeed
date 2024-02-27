@@ -22,7 +22,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="YP Background"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="7wZ-yM-LFJ" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="71Q-Bf-9Bs"/>
                             <constraint firstItem="7wZ-yM-LFJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ccA-jP-D7f"/>
@@ -36,8 +36,8 @@
     </scenes>
     <resources>
         <image name="ImageLogo" width="72.666664123535156" height="75.333335876464844"/>
-        <namedColor name="YP Background">
-            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="YP Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

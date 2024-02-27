@@ -18,44 +18,73 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBOutlet private var imageView: UIImageView!
-    
     @IBOutlet weak var shareButton: UIButton!
-    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var backButton: UIButton!
     
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
-
-            scrollView.minimumZoomScale = 0.1
-            scrollView.maximumZoomScale = 1.25
+        
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
+        
+        imageView.image = image
+        imageView.frame.size = image.size
+        rescaleAndCenterImageInScrollView(image: image)
+        centerImageInfoScrollView()
+        
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView) // Добавляем imageView на view контроллера
+        view.bringSubviewToFront(shareButton)
+        view.bringSubviewToFront(backButton)
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        shareButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shareButton)
+        
+        NSLayoutConstraint.activate([
+            shareButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            shareButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            shareButton.heightAnchor.constraint(equalToConstant: 51),
+            shareButton.widthAnchor.constraint(equalToConstant: 51)
+        ])
+        
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backButton)
+        
+        NSLayoutConstraint.activate([
             
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
-            centerImageInfoScrollView()
-            
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(imageView) // Добавляем imageView на view контроллера
-            view.bringSubviewToFront(shareButton)
-            view.bringSubviewToFront(backButton)
-
-            NSLayoutConstraint.activate([
-                imageView.topAnchor.constraint(equalTo: view.topAnchor),
-                imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-            
-
+            backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            backButton.widthAnchor.constraint(equalToConstant: 48),
+            backButton.heightAnchor.constraint(equalToConstant: 48)
+        ])
     }
     
     @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
         guard let image = imageView.image else { return }
         let share = UIActivityViewController(
             activityItems: [image],
@@ -78,7 +107,7 @@ final class SingleImageViewController: UIViewController {
         let x = (newContentSize.width - visibleRectSize.width) / 2
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
-    } 
+    }
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {

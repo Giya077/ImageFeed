@@ -8,7 +8,7 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-                    
+    
     override func viewDidLoad() {
         
         view.backgroundColor = .ypBlack
@@ -35,9 +35,11 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = "Екатерина Новикова"
         nameLabel.font = UIFont(name: "YS Display Bold", size: 23)
         nameLabel.font = UIFont.boldSystemFont(ofSize: 23)
+        nameLabel.numberOfLines = 0
         
-        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 15).isActive = true
+        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         // LOGIN
         
@@ -48,9 +50,11 @@ final class ProfileViewController: UIViewController {
         loginName.textColor = .ypGray
         loginName.text = "@ekaterina_nov"
         loginName.font = UIFont(name: "YS Display Regular", size: 13)
+        loginName.numberOfLines = 0
         
-        loginName.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15).isActive = true
+        loginName.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
         loginName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        loginName.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         //DESCRIPTION
         
@@ -61,9 +65,11 @@ final class ProfileViewController: UIViewController {
         description.textColor = .ypWhite
         description.text = "Hello, World!"
         description.font = UIFont(name: "YS Display Regular", size: 13)
+        description.numberOfLines = 0
         
-        description.topAnchor.constraint(equalTo: loginName.bottomAnchor, constant: 15).isActive = true
+        description.topAnchor.constraint(equalTo: loginName.bottomAnchor, constant: 8   ).isActive = true
         description.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        description.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         // LOGOUT BOTTON
         
@@ -89,6 +95,4 @@ final class ProfileViewController: UIViewController {
             }
         }
     }
-    
-    
 }
