@@ -67,7 +67,7 @@ final class ProfileViewController: UIViewController {
         description.font = UIFont(name: "YS Display Regular", size: 13)
         description.numberOfLines = 0
         
-        description.topAnchor.constraint(equalTo: loginName.bottomAnchor, constant: 8   ).isActive = true
+        description.topAnchor.constraint(equalTo: loginName.bottomAnchor, constant: 8).isActive = true
         description.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         description.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
