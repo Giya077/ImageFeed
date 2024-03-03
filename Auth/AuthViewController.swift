@@ -46,9 +46,8 @@ final class AuthViewController: UIViewController {
         NSLayoutConstraint.activate([
         loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
         loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
-        loginButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 640)
+        loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100),
+        loginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-        
     }
 }
