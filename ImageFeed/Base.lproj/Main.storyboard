@@ -265,12 +265,17 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zlG-97-nKw">
+                                <rect key="frame" x="118" y="517" width="150" height="4"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="caJ-xu-IVx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="s5E-62-BvP"/>
                     <connections>
+                        <outlet property="progressView" destination="zlG-97-nKw" id="bfa-89-YZk"/>
                         <outlet property="webView" destination="Olc-6l-ccq" id="NOt-r3-n8h"/>
                     </connections>
                 </viewController>
