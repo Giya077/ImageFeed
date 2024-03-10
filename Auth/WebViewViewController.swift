@@ -73,6 +73,11 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
     @IBAction private func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
@@ -107,10 +112,29 @@ final class WebViewViewController: UIViewController {
         }
     }
     
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
+//    func makeOAuthTokenRequest(code: String) -> URLRequest? {
+//        guard let baseURL = URL(string: "https://unsplash.com"),
+//              var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true) else {
+//            return nil
+//        }
+//        
+//        let queryItems = [
+//            URLQueryItem(name: "client_id", value: Constants.accessKey),
+//            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+//            URLQueryItem(name: "code", value: code),
+//        URLQueryItem(name: "grant_type", value: "authorization_code")
+//        ]
+//        components.queryItems = queryItems
+//        
+//        guard let url = components.url else {
+//            return nil
+//        }
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        
+//        return request
+//    }
 }
 
 extension WebViewViewController: WKNavigationDelegate {
