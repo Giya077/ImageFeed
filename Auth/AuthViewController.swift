@@ -8,9 +8,15 @@
 import Foundation
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
 final class AuthViewController: UIViewController {
     
     private let ShowWebViewSegueIdentifier = "ShowWebView"
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var loginButton: UIButton!
@@ -74,7 +80,6 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
             switch result {

@@ -22,12 +22,14 @@ final class WebViewViewController: UIViewController {
     
     @IBOutlet private var webView: WKWebView!
     @IBOutlet weak var progressView: UIProgressView!
+    
     weak var delegate: WebViewViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         webView.navigationDelegate = self //навигационный делегат
+        
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
@@ -111,30 +113,6 @@ final class WebViewViewController: UIViewController {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
-    
-//    func makeOAuthTokenRequest(code: String) -> URLRequest? {
-//        guard let baseURL = URL(string: "https://unsplash.com"),
-//              var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true) else {
-//            return nil
-//        }
-//        
-//        let queryItems = [
-//            URLQueryItem(name: "client_id", value: Constants.accessKey),
-//            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-//            URLQueryItem(name: "code", value: code),
-//        URLQueryItem(name: "grant_type", value: "authorization_code")
-//        ]
-//        components.queryItems = queryItems
-//        
-//        guard let url = components.url else {
-//            return nil
-//        }
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        
-//        return request
-//    }
 }
 
 extension WebViewViewController: WKNavigationDelegate {
