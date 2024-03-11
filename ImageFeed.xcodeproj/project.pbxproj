@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A0A08192B94D77900BF45C8 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0A08182B94D77900BF45C8 /* WebViewViewController.swift */; };
 		1A2CC7EF2B998FA9003C1F6A /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2CC7EE2B998FA9003C1F6A /* OAuth2Service.swift */; };
+		1A524E0D2B9EDA6B002AB11D /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */; };
 		1A5EC0252B9BA39100A815BB /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5EC0242B9BA39100A815BB /* OAuthTokenResponseBody.swift */; };
 		1A5F9D4C2B7F2F4F0024B314 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F9D4B2B7F2F4F0024B314 /* ProfileViewController.swift */; };
 		1A94F48E2B91CE00002A06F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A94F48D2B91CE00002A06F9 /* Constants.swift */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		1A0A08182B94D77900BF45C8 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		1A2CC7EE2B998FA9003C1F6A /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-Pro.ttf"; path = "ImageFeed/fonts/SF-Pro.ttf"; sourceTree = "<group>"; };
 		1A5EC0242B9BA39100A815BB /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		1A5F9D4B2B7F2F4F0024B314 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1A94F48D2B91CE00002A06F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 		1AE4B69D2B6C0EDF00946163 = {
 			isa = PBXGroup;
 			children = (
+				1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */,
 				1AE4B6A82B6C0EDF00946163 /* ImageFeed */,
 				1AE217242B9E1B02003A97E8 /* ServiceAccessLayer */,
 				1AE217252B9E1B63003A97E8 /* Auth */,
@@ -329,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AE4B6B62B6C0EE000946163 /* LaunchScreen.storyboard in Resources */,
+				1A524E0D2B9EDA6B002AB11D /* SF-Pro.ttf in Resources */,
 				1AE4B6B32B6C0EE000946163 /* Assets.xcassets in Resources */,
 				1AE4B6B12B6C0EDF00946163 /* Main.storyboard in Resources */,
 			);

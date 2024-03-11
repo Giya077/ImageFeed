@@ -86,8 +86,6 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // NOTE: Since the class is marked as `final` we don't need to pass a context.
-        // In case of inhertiance context must not be nil.
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -123,12 +121,14 @@ extension WebViewViewController: WKNavigationDelegate {
     ) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            sleep(3) //костыль
+            dismiss(animated: true, completion: nil) //закрывает браузер
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
         }
     }
-    
+
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,

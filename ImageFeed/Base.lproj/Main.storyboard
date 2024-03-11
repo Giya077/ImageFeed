@@ -9,6 +9,12 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro.ttf">
+            <string>SFPro-Bold</string>
+            <string>SFPro-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
@@ -45,8 +51,8 @@
                                                     <state key="normal" image="Active"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 февраля 2024" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHu-GB-46M" userLabel="Date Label">
-                                                    <rect key="frame" x="24" y="196" width="349" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="24" y="197.66666666666666" width="349" height="14.333333333333343"/>
+                                                    <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="12"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -96,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1283" y="-672"/>
+            <point key="canvasLocation" x="2466" y="-501"/>
         </scene>
         <!--Profile-->
         <scene sceneID="vnO-ZK-wQE">
@@ -111,12 +117,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JLH-wL-gfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1282" y="37"/>
+            <point key="canvasLocation" x="3028" y="210"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="FdV-Ua-OEu">
             <objects>
                 <tabBarController storyboardIdentifier="TabBarViewController" id="Luc-Ou-4ME" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="uEn-X4-HEV"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nAb-PJ-Z1n">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -133,7 +140,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fst-yC-eeK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137" y="-354"/>
+            <point key="canvasLocation" x="378" y="-325"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="2Sd-Ds-plZ">
@@ -193,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="90t-NS-zYI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2661.8320610687024" y="-673.23943661971839"/>
+            <point key="canvasLocation" x="3624" y="-501"/>
         </scene>
         <!--AuthViewController-->
         <scene sceneID="q5j-zP-vWy">
@@ -208,10 +215,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psi-YH-FD1">
-                                <rect key="frame" x="57" y="356" width="167" height="324"/>
+                                <rect key="frame" x="57" y="356" width="167" height="277"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="SFPro-Bold" family="SF Pro" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
                                 <connections>
                                     <segue destination="kbi-u0-2vb" kind="show" identifier="ShowWebView" id="zZw-Yd-KpO"/>
                                 </connections>
@@ -228,7 +236,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3uA-OU-GNH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1306" y="-1415"/>
+            <point key="canvasLocation" x="1402" y="-1415"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dtb-PY-fnV">

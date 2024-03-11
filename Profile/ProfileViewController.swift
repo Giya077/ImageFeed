@@ -33,8 +33,7 @@ final class ProfileViewController: UIViewController {
         
         nameLabel.textColor = .white
         nameLabel.text = "Екатерина Новикова"
-        nameLabel.font = UIFont(name: "YS Display Bold", size: 23)
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 23)
+        nameLabel.font = UIFont(name: "SF Pro Bold", size: 23)
         nameLabel.numberOfLines = 0
         
         nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
@@ -49,7 +48,7 @@ final class ProfileViewController: UIViewController {
         
         loginName.textColor = .ypGray
         loginName.text = "@ekaterina_nov"
-        loginName.font = UIFont(name: "YS Display Regular", size: 13)
+        loginName.font = UIFont(name: "SF Pro Regular", size: 13)
         loginName.numberOfLines = 0
         
         loginName.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
@@ -64,7 +63,7 @@ final class ProfileViewController: UIViewController {
         
         description.textColor = .ypWhite
         description.text = "Hello, World!"
-        description.font = UIFont(name: "YS Display Regular", size: 13)
+        description.font = UIFont(name: "SF Pro Regular", size: 13)
         description.numberOfLines = 0
         
         description.topAnchor.constraint(equalTo: loginName.bottomAnchor, constant: 8).isActive = true

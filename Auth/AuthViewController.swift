@@ -13,7 +13,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    
     private let ShowWebViewSegueIdentifier = "ShowWebView"
     
     weak var delegate: AuthViewControllerDelegate?
@@ -54,7 +53,7 @@ final class AuthViewController: UIViewController {
         loginButton.backgroundColor = .white
         loginButton.setTitleColor(.black, for: .normal)
         loginButton.setTitle("Войти", for: .normal)
-        loginButton.titleLabel?.font = UIFont(name: "YS Display Bold", size: 23)
+        loginButton.titleLabel?.font = UIFont(name: "SF Pro Bold", size: 17)
         loginButton.layer.cornerRadius = 16
         loginButton.layer.masksToBounds = true
         
@@ -90,7 +89,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
             }
         }
     }
-    
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
