@@ -68,7 +68,9 @@ final class OAuth2Service {
                     let decodedResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
                     let accessToken = decodedResponse.accessToken
                     OAuth2TokenStorage.shared.token = accessToken
-                    completion(.success(accessToken))
+                    DispatchQueue.main.async {      // вызов блока completion
+                        completion(.success(accessToken))
+                    }
                 } catch {
                     print("Error decoding JSON response: \(error.localizedDescription)")
                     completion(.failure(error))

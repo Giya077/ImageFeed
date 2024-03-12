@@ -13,18 +13,19 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
+    private let showWebViewSegueIdentifier = "ShowWebView"
     
     weak var delegate: AuthViewControllerDelegate?
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var loginButton: UIButton!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)") }
+        if segue.identifier == showWebViewSegueIdentifier {
+            guard let webViewViewController = segue.destination as? WebViewViewController else {
+                assertionFailure("failed to cast destination view controller to WebViewViewController")
+                return
+            }
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -84,6 +85,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             switch result {
             case .success(let token):
                 print("Received access token: \(token)")
+                self.delegate?.authViewController(self, didAuthenticateWithCode: code) //вызов fetchOAuthToken при получении кода через делегат
             case.failure(let error):
                 print("Error fetching access token: \(error)")
             }

@@ -72,6 +72,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             self.fetchOAuthToken(code)
         }
+        fetchOAuthToken(code) //проверка токена
     }
 
     private func fetchOAuthToken(_ code: String) {
@@ -79,7 +80,9 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
-                self.switchToTabBarController()
+                DispatchQueue.main.async {
+                    self.switchToTabBarController() //переключение экрана
+                }
             case .failure:
                 // TODO [Sprint 11]
                 break

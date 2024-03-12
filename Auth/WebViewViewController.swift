@@ -21,7 +21,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     @IBOutlet private var webView: WKWebView!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet private weak var progressView: UIProgressView!
     
     weak var delegate: WebViewViewControllerDelegate?
     
@@ -68,7 +68,7 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         guard let url = urlComponents.url else {
-            print()
+            print("failed to create url components from: \(WebViewConstants.unsplashAuthorizeURLString)")
             return
         }
         let request = URLRequest(url: url)
@@ -121,8 +121,6 @@ extension WebViewViewController: WKNavigationDelegate {
     ) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-            sleep(3) //костыль
-            dismiss(animated: true, completion: nil) //закрывает браузер
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
