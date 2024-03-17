@@ -45,7 +45,6 @@ final class SingleImageViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView) // Добавляем imageView на view контроллера
         view.bringSubviewToFront(shareButton)
