@@ -3,6 +3,7 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    private let showSingleImageSequeIdentifier = "ShowSingleImage"
     
     @IBOutlet
     private var tableView: UITableView!
@@ -24,7 +25,25 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     } ()
-}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSequeIdentifier { // проверяем идентификатор сегвея
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath // Преобразуем тип для аргумента sender
+            else {
+                assertionFailure("Invalid seque destination")
+                return
+            }
+            
+            let image = UIImage(named: photosName[indexPath.row]) // Получаем по индексу название картинки и саму картинку
+            viewController.image = image // Передаём эту картинку в imageView
+        } else {
+                super.prepare(for: segue, sender: sender)
+            }
+        }
+    }
+
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,7 +80,9 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageSequeIdentifier, sender: indexPath)
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
