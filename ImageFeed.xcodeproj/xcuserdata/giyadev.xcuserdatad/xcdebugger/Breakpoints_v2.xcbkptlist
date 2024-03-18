@@ -14,8 +14,8 @@
             filePath = "ServiceAccessLayer/OAuth2/OAuth2Service.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "fetchOAuthToken(with:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -23,32 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A3A77AA0-592B-477F-B3DC-7005BCC9D8BC"
-            shouldBeEnabled = "Yes"
+            uuid = "612E1754-E526-4722-9EB8-24FF8EAC5983"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SplashViewController/SplashViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "fetchOAuthToken(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A1AC5777-30F7-49DE-B967-20E6BD290091"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Auth/AuthViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "webViewViewController(_:didAuthenticateWithCode:)"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "authViewController(_:didAuthenticateWithCode:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
