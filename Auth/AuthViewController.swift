@@ -82,14 +82,17 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.animate()
+//        ProgressHUD.animate()
+        UIBlockingProgressHUD.show()
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
             switch result {
             case .success(let token):
                 print("Received access token: \(token)")
                 self.delegate?.authViewController(self, didAuthenticateWithCode: code) //вызов fetchOAuthToken при получении кода через делегат
+                UIBlockingProgressHUD.dismiss()
             case.failure(let error):
                 print("Error fetching access token: \(error)")
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }

@@ -29,6 +29,7 @@
 		1AE4B6CB2B6C0EE000946163 /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4B6CA2B6C0EE000946163 /* ImageFeedUITests.swift */; };
 		1AE4B6CD2B6C0EE000946163 /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE4B6CC2B6C0EE000946163 /* ImageFeedUITestsLaunchTests.swift */; };
 		1AE930D12B82036A001941F7 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE930D02B82036A001941F7 /* SingleImageViewController.swift */; };
+		1AF4A4622BA864770072D652 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF4A4612BA864770072D652 /* UIBlockingProgressHUD.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		1AE4B6CA2B6C0EE000946163 /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		1AE4B6CC2B6C0EE000946163 /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1AE930D02B82036A001941F7 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		1AF4A4612BA864770072D652 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				1AE4B6B72B6C0EE000946163 /* Info.plist */,
 				1AE4B6B22B6C0EE000946163 /* Assets.xcassets */,
 				1AE4B6AF2B6C0EDF00946163 /* Main.storyboard */,
+				1AF4A4612BA864770072D652 /* UIBlockingProgressHUD.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				1AE217282B9E1D62003A97E8 /* SplashViewController.swift in Sources */,
 				1ADD73AA2B935F3A00208BD8 /* AuthViewController.swift in Sources */,
 				1A5EC0252B9BA39100A815BB /* OAuthTokenResponseBody.swift in Sources */,
+				1AF4A4622BA864770072D652 /* UIBlockingProgressHUD.swift in Sources */,
 				1A94F48E2B91CE00002A06F9 /* Constants.swift in Sources */,
 				1AE930D12B82036A001941F7 /* SingleImageViewController.swift in Sources */,
 				1ABF86932B9B894B005B407A /* URLSession+data.swift in Sources */,

@@ -16,7 +16,6 @@ final class OAuth2Service {
     static let shared = OAuth2Service() //точка входа
     private init() {} // единственный экземпляр класса
 
-    private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
     
