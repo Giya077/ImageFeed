@@ -19,7 +19,7 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    func fetchOAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(with code: String, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else {
             let error = NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URL request"])
             print("Error creating URL request: \(error.localizedDescription)")
@@ -42,45 +42,26 @@ final class OAuth2Service {
         
         lastCode = code // Запоминаем текущий код
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("URL session error: \(error.localizedDescription)")
-                completion(.failure(NetworkError.urlSessionError))
-                return
-            }
-
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                print("Failed to receive valid data or response")
-                completion(.failure(NetworkError.urlSessionError))
-                return
-            }
-
-            if 200 ..< 300 ~= response.statusCode {
-                do {
-                    let decodedResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    let accessToken = decodedResponse.accessToken
-                    OAuth2TokenStorage.shared.token = accessToken
-                    DispatchQueue.main.async {      // вызов блока completion
-                        completion(.success(accessToken))
-                    }
-                } catch {
-                    print("Error decoding JSON response: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
-            } else {
-                print("HTTP status code error: \(response.statusCode)")
-                completion(.failure(NetworkError.httpStatusCode(response.statusCode)))
-            }
-            // Обнуляем задачу и код
-            self.task = nil
-            self.lastCode = nil
-        }
-        // Запускаем задачу
-        task.resume()
-        
-        // Сохраняем ссылку на задачу
-        self.task = task
-    }
+        let task = URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
+                  switch result {
+                  case .success(let decodedResponse):
+                      DispatchQueue.main.async {
+                          completion(.success(decodedResponse))
+                      }
+                  case .failure(let error):
+                      completion(.failure(error))
+                  }
+                  
+                  // Обнуляем задачу и код
+                  self.task = nil
+                  self.lastCode = nil
+              }
+              // Запускаем задачу
+              task.resume()
+              
+              // Сохраняем ссылку на задачу
+              self.task = task
+          }
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? { //Создает и возвращает URLRequest для запроса на получение авторизационного токена
         guard let baseURL = URL(string: "https://unsplash.com/oauth/token"),

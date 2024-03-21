@@ -76,28 +76,18 @@ final class ProfileService {
         }
         
         let session = URLSession.shared
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(ProfileServiceError.noData))
-                return
-            }
-            
-            do {
-                let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-                let profile = Profile(userName: profileResult.username,
-                                      firstName: "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")",
-                                      lastName: "@\(profileResult.username)",
-                                      bio: profileResult.bio)
+        let task = session.objectTask(for: request) { (result: Result<ProfileResult, Error>) in
+            switch result {
+            case.success(let profileResult):
+                let profile = Profile(
+                    userName: profileResult.username,
+                    firstName: profileResult.firstName ?? "",
+                    lastName: profileResult.lastName ?? "",
+                    bio: profileResult.bio)
                 self.profile = profile
                 completion(.success(profile))
-            } catch {
-                print("Error decoding JSON: \(error.localizedDescription)")
-                completion(.failure(ProfileServiceError.invalidData))
+            case.failure(let error):
+                completion(.failure(error))
             }
         }
         task.resume()

@@ -21,7 +21,7 @@ final class ProfileImageService {
     private let tokenStorage = OAuth2TokenStorage.shared
     private let baseURL = "https://api.unsplash.com/users/"
     var avatarURL: String?
-    private var task: URLSessionDataTask?
+    private var task: URLSessionTask?
     
     private init() {}
     
@@ -54,21 +54,9 @@ final class ProfileImageService {
         }
         
         let session = URLSession.shared
-        task = session.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(ProfileImageServiceError.noData))
-                return
-            }
-            
-            do {
-                let userResult = try JSONDecoder().decode(UserResult.self, from: data)
+        task = session.objectTask(for: request) { (result: Result<UserResult, Error>) in
+            switch result {
+            case.success(let userResult):
                 self.avatarURL = userResult.profileImage.small
                 NotificationCenter.default.post(
                     name: ProfileImageService.didChangeNotification,
@@ -76,12 +64,10 @@ final class ProfileImageService {
                     userInfo: ["URL": userResult.profileImage.small]
                 )
                 completion(.success(userResult.profileImage.small))
-            } catch {
-                print("Error decoding JSON: \(error.localizedDescription)")
-                completion(.failure(ProfileImageServiceError.invalidData))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
-        
         task?.resume()
 //        self.task = task
     }
