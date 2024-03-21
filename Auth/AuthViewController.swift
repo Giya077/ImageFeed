@@ -67,11 +67,6 @@ final class AuthViewController: UIViewController {
         ])
     }
     
-    //    @objc func loginButtonTapped() {
-    //        let webViewVC = WebViewViewController()
-    //        navigationController?.pushViewController(webViewVC, animated: true)
-    //    }
-    
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
@@ -82,7 +77,6 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-//        ProgressHUD.animate()
         UIBlockingProgressHUD.show()
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
             switch result {

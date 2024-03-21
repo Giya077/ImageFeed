@@ -12,6 +12,7 @@ final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service.shared 
     private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +33,9 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if oauth2TokenStorage.token != nil {
+        if let token = oauth2TokenStorage.token {
             switchToTabBarController()
+            fetchProfile(token) //?1
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -69,8 +71,10 @@ extension SplashViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
-            guard self != nil else { return } // ? 
+            guard let self = self else { return }
+            self.fetchProfile(code) // ?1
         }
+//        fetchOAuthToken(code) ?
     }
 
     private func fetchOAuthToken(_ code: String) {
@@ -83,6 +87,27 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
             case .failure:
                 // TODO [Sprint 11]
+                break
+            }
+        }
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss() // ? 
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self.switchToTabBarController()
+                }
+                let username = profileService.profile?.userName ?? ""
+                ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in
+                    // ничего не делаем
+                }
+            case .failure:
                 break
             }
         }
