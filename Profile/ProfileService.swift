@@ -9,8 +9,8 @@ import Foundation
 
 enum ProfileServiceError: Error {
     case invalidURL
-    case noData
-    case invalidData
+    case urlRequestError(Error)
+    case urlSessionError
 }
 
 final class ProfileService {
@@ -67,7 +67,9 @@ final class ProfileService {
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         guard let request = makeUrlRequest(endpoint: "https://api.unsplash.com/me", bearerToken: token) else {
-            completion(.failure(ProfileServiceError.invalidURL))
+            let urlRequestError = ProfileServiceError.invalidURL
+            print("[fetchProfile]: Profile Service Error - \(urlRequestError)")
+            completion(.failure(urlRequestError))
             return
         }
         
@@ -87,7 +89,9 @@ final class ProfileService {
                 self.profile = profile
                 completion(.success(profile))
             case.failure(let error):
-                completion(.failure(error))
+                let invalidSessionError = ProfileServiceError.urlSessionError
+                print("[objectTask]: Profile Service Error - \(invalidSessionError)")
+                completion(.failure(invalidSessionError))
             }
         }
         task.resume()

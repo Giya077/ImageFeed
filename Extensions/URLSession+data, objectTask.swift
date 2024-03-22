@@ -11,6 +11,7 @@ enum NetworkError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
+    case decodingError(Error)
 }
 
 extension URLSession {
@@ -29,11 +30,17 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data)) 
                 } else {
+                    let statusCodeError = NetworkError.httpStatusCode(statusCode)
+                    print("[dataTask]: Network Error - \(statusCodeError)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
+                let urlRequestError = NetworkError.urlRequestError(error)
+                print("[dataTask]: Network Error - \(urlRequestError)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
+                let urlSessionError = NetworkError.urlSessionError
+                print("[dataTask]: Network Error - \(urlSessionError)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
@@ -55,10 +62,14 @@ extension URLSession {
                     let decodedObject = try decoder.decode(T.self, from: data)
                     completion(.success(decodedObject))
                 } catch {
-                    completion(.failure(error))
+                    let decodingError = NetworkError.decodingError(error)
+                    print("[objectTask]: Network Error - \(decodingError)")
+                    completion(.failure(decodingError))
                 }
             case .failure(let error):
-                completion(.failure(error))
+                let urlSessionError = NetworkError.urlSessionError
+                print("[objectTask]: Network Error - \(urlSessionError)")
+                completion(.failure(urlSessionError))
             }
         }
         return task

@@ -7,8 +7,11 @@
 
 import Foundation
 
-enum AuthServiceError: Error {
+enum OAuthRequestError: Error {
+    case urlComponentError
+    case urlCreationError
     case duplicateRequest
+    case urlRequestError(Error)
 }
 
 final class OAuth2Service {
@@ -21,9 +24,9 @@ final class OAuth2Service {
     
     func fetchOAuthToken(with code: String, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else {
-            let error = NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URL request"])
-            print("Error creating URL request: \(error.localizedDescription)")
-            completion(.failure(NetworkError.urlRequestError(error)))
+            let urlRequestError = OAuthRequestError.urlRequestError(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URL request"]))
+            print("[fetchOAuthToken]: OAuthRequestError \(urlRequestError)")
+            completion(.failure(urlRequestError))
             return
         }
         
@@ -34,8 +37,9 @@ final class OAuth2Service {
                 task.cancel()
             } else {
                 // Если текущий код совпадает с предыдущим, возвращаем ошибку
-                completion(.failure(AuthServiceError.duplicateRequest))
-                print("Error fetching OAuth token")
+                let duplicateRequestError = OAuthRequestError.duplicateRequest
+                print("[fetchOAuthToken]: OAuthRequestError - \(duplicateRequestError)")
+                completion(.failure(duplicateRequestError))
                 return
             }
         }
@@ -49,7 +53,9 @@ final class OAuth2Service {
                           completion(.success(decodedResponse))
                       }
                   case .failure(let error):
-                      completion(.failure(error))
+                      let oauthRequestError = OAuthRequestError.urlRequestError(error)
+                      print("[objectTask]: OAuthRequestError - \(oauthRequestError)")
+                      completion(.failure(oauthRequestError))
                   }
                   
                   // Обнуляем задачу и код
@@ -66,7 +72,8 @@ final class OAuth2Service {
     func makeOAuthTokenRequest(code: String) -> URLRequest? { //Создает и возвращает URLRequest для запроса на получение авторизационного токена
         guard let baseURL = URL(string: "https://unsplash.com/oauth/token"),
               var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true) else {
-            assertionFailure("Failed to create URL components")
+            let urlComponentsError = OAuthRequestError.urlComponentError
+            print("[makeOAuthTokenRequest]: OAuthRequestError - \(urlComponentsError)")
             return nil
         }
         
@@ -80,7 +87,8 @@ final class OAuth2Service {
         components.queryItems = queryItems
         
         guard let url = components.url else {
-            assertionFailure("Failed to create URL")
+            let urlError = OAuthRequestError.urlCreationError
+            print("[makeOAuthTokenRequest]: OAuthRequestError \(urlError)")
             return nil
         }
         var request = URLRequest(url: url)

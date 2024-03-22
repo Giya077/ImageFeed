@@ -10,8 +10,7 @@ import Foundation
 enum ProfileImageServiceError: Error {
     case missingToken
     case invalidURL
-    case noData
-    case invalidData
+    case urlSessionError
 }
 
 final class ProfileImageService {
@@ -39,7 +38,9 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         guard let token = tokenStorage.token else {
-            completion(.failure(ProfileImageServiceError.missingToken))
+            let missingToken = ProfileImageServiceError.missingToken
+            print("[fetchProfileImageURL]: Profile Image Service Error - \(missingToken)")
+            completion(.failure(missingToken))
             return
         }
         
@@ -49,7 +50,9 @@ final class ProfileImageService {
         }
         
         guard let request = makeURLRequest(for: username, with: token) else {
-            completion(.failure(ProfileImageServiceError.invalidURL))
+            let invalidURL = ProfileImageServiceError.invalidURL
+            print("[fetchProfileImageURL]: Profile Image Service Error - \(invalidURL)")
+            completion(.failure(invalidURL))
             return
         }
         
@@ -65,6 +68,9 @@ final class ProfileImageService {
                 )
                 completion(.success(userResult.profileImage.small))
             case .failure(let error):
+                let invalidSessionError = ProfileImageServiceError.urlSessionError
+                print("[objectTask]: fetchProfileImageURL - \(invalidSessionError)")
+                
                 completion(.failure(error))
             }
         }
