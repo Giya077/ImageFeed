@@ -22,7 +22,10 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    func fetchOAuthToken(with code: String, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) {
+    func fetchOAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        print("Requesting OAuth token with authorization code: \(code)")
+        
+        // Создаем запрос на получение токена
         guard let request = makeOAuthTokenRequest(code: code) else {
             let urlRequestError = OAuthRequestError.urlRequestError(NSError(domain: "OAuth2Service", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URL request"]))
             print("[fetchOAuthToken]: OAuthRequestError \(urlRequestError)")
@@ -30,44 +33,24 @@ final class OAuth2Service {
             return
         }
         
-        assert(Thread.isMainThread) // Убедимся, что мы на главном потоке
-        
-        if let task = self.task {
-            if lastCode != code {
-                task.cancel()
-            } else {
-                // Если текущий код совпадает с предыдущим, возвращаем ошибку
-                let duplicateRequestError = OAuthRequestError.duplicateRequest
-                print("[fetchOAuthToken]: OAuthRequestError - \(duplicateRequestError)")
-                completion(.failure(duplicateRequestError))
-                return
+        // Выполняем запрос с помощью objectTask
+        URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
+            switch result {
+            case .success(let decodedResponse):
+                // Обработка успешного ответа
+                let accessToken = decodedResponse.accessToken
+                OAuth2TokenStorage.shared.token = accessToken
+                DispatchQueue.main.async {
+                    completion(.success(accessToken))
+                }
+            case .failure(let error):
+                // Обработка ошибки
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
-        }
-        
-        lastCode = code // Запоминаем текущий код
-
-        let task = URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
-                  switch result {
-                  case .success(let decodedResponse):
-                      DispatchQueue.main.async {
-                          completion(.success(decodedResponse))
-                      }
-                  case .failure(let error):
-                      let oauthRequestError = OAuthRequestError.urlRequestError(error)
-                      print("[objectTask]: OAuthRequestError - \(oauthRequestError)")
-                      completion(.failure(oauthRequestError))
-                  }
-                  
-                  // Обнуляем задачу и код
-                  self.task = nil
-                  self.lastCode = nil
-              }
-              // Запускаем задачу
-              task.resume()
-              
-              // Сохраняем ссылку на задачу
-              self.task = task
-          }
+        }.resume()
+    }
     
     func makeOAuthTokenRequest(code: String) -> URLRequest? { //Создает и возвращает URLRequest для запроса на получение авторизационного токена
         guard let baseURL = URL(string: "https://unsplash.com/oauth/token"),

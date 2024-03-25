@@ -66,7 +66,7 @@ extension URLSession {
                     print("[objectTask]: Network Error - \(decodingError)")
                     completion(.failure(decodingError))
                 }
-            case .failure(let error):
+            case .failure(_):
                 let urlSessionError = NetworkError.urlSessionError
                 print("[objectTask]: Network Error - \(urlSessionError)")
                 completion(.failure(urlSessionError))

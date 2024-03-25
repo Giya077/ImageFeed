@@ -24,7 +24,7 @@ final class ProfileService {
     
     struct ProfileResult: Codable {
         let id: String
-        let updatedAt: Date
+        let updatedAt: String
         let username: String
         let firstName: String?
         let lastName: String?
@@ -37,6 +37,29 @@ final class ProfileService {
         let totalCollections: Int
         let followedByUser: Bool
         let downloads: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case updatedAt = "updated_at"
+            case username
+            case firstName = "first_name"
+            case lastName = "last_name"
+            case twitterUsername = "twitter_username"
+            case portfolioURL = "portfolio_url"
+            case bio
+            case location
+            case totalLikes = "total_likes"
+            case totalPhotos = "total_photos"
+            case totalCollections = "total_collections"
+            case followedByUser = "followed_by_user"
+            case downloads
+        }
+        
+        var updatedAtDate: Date? {
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.formatOptions = [.withInternetDateTime]
+            return dateFormatter.date(from: updatedAt)
+        }
     }
     
     struct Profile {
@@ -45,10 +68,10 @@ final class ProfileService {
         let loginName: String
         let bio: String?
         
-        init(userName: String, firstName: String, lastName: String, bio: String?) {
+        init(userName: String, name: String, loginName: String, bio: String?) {
             self.userName = userName
-            self.name = "\(firstName) \(lastName)".trimmingCharacters(in: .whitespacesAndNewlines)
-            self.loginName = "@\(userName)"
+            self.name = name
+            self.loginName = loginName
             self.bio = bio
         }
     }
@@ -83,12 +106,12 @@ final class ProfileService {
             case.success(let profileResult):
                 let profile = Profile(
                     userName: profileResult.username,
-                    firstName: profileResult.firstName ?? "",
-                    lastName: profileResult.lastName ?? "",
+                    name: "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")".trimmingCharacters(in: .whitespacesAndNewlines),
+                    loginName: "@\(profileResult.username)",
                     bio: profileResult.bio)
                 self.profile = profile
                 completion(.success(profile))
-            case.failure(let error):
+            case.failure(_):
                 let invalidSessionError = ProfileServiceError.urlSessionError
                 print("[objectTask]: Profile Service Error - \(invalidSessionError)")
                 completion(.failure(invalidSessionError))
