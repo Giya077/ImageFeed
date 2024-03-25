@@ -88,6 +88,7 @@ final class ProfileService {
         
     }
     
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         guard let request = makeUrlRequest(endpoint: "https://api.unsplash.com/me", bearerToken: token) else {
             let urlRequestError = ProfileServiceError.invalidURL

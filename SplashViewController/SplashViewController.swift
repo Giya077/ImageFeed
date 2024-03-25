@@ -34,8 +34,8 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let token = oauth2TokenStorage.token {
-            switchToTabBarController()
-            fetchProfile(token) //?1
+//            switchToTabBarController()
+            fetchProfile(token)
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -52,9 +52,7 @@ final class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-}
 
-extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
             guard
@@ -72,9 +70,8 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            self.fetchProfile(code) // ?1
+//            fetchProfile(code) //
         }
-//        fetchOAuthToken(code) ?
     }
 
     private func fetchOAuthToken(_ code: String) {
@@ -92,10 +89,20 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
+//    func didAuthenticate(_ vc: AuthViewController) {
+//          vc.dismiss(animated: true)
+//         
+//          guard let token = oauth2TokenStorage.token else {
+//              return
+//          }     //?????????
+//        
+//        fetchProfile(token)
+//      }
+    
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         ProfileService.shared.fetchProfile(token) { [weak self] result in
-            UIBlockingProgressHUD.dismiss() // ? 
+            UIBlockingProgressHUD.dismiss() // ?
             guard let self = self else { return }
             
             switch result {
@@ -103,10 +110,10 @@ extension SplashViewController: AuthViewControllerDelegate {
                 DispatchQueue.main.async {
                     self.switchToTabBarController()
                 }
-                let username = profileService.profile?.userName ?? ""
-                ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in
-                    // ничего не делаем
-                }
+//                let username = profileService.profile?.userName ?? ""
+//                ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in
+//                    // ничего не делаем
+//                }
             case .failure:
                 break
             }

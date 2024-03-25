@@ -22,8 +22,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         
         view.backgroundColor = .ypBlack
-        
-        fetchProfile()
+    
         updateAvatar()
         addLabels()
         addLogoutButton()
@@ -33,21 +32,6 @@ final class ProfileViewController: UIViewController {
         }
         
         observeProfileImageChanges()
-    }
-    
-    private func fetchProfile() {
-        guard let token = OAuth2TokenStorage.shared.token else { return }
-        profileService.fetchProfile(token) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self.updateProfileDetails(profile)
-                }
-            case .failure(let error):
-                print("Failed to fetch profile: \(error)")
-            }
-        }
     }
     
     private func addLabels() {
@@ -111,8 +95,6 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio ?? ""
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
     }
     
     private func updateAvatar() {
