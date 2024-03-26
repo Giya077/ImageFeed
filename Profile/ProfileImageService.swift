@@ -14,12 +14,13 @@ enum ProfileImageServiceError: Error {
 }
 
 final class ProfileImageService {
+    
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     private let tokenStorage = OAuth2TokenStorage.shared
     private let baseURL = "https://api.unsplash.com/users/"
-    var avatarURL: String?
+    private (set) var avatarURL: String?
     private var task: URLSessionTask?
     
     private init() {}
@@ -61,7 +62,8 @@ final class ProfileImageService {
             switch result {
             case.success(let userResult):
                 self.avatarURL = userResult.profileImage.small
-                NotificationCenter.default.post(
+                NotificationCenter.default
+                    .post(
                     name: ProfileImageService.didChangeNotification,
                     object: self,
                     userInfo: ["URL": userResult.profileImage.small]

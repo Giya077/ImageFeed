@@ -14,17 +14,17 @@ final class ProfileViewController: UIViewController {
     
     let profileService = ProfileService.shared
     
-    let nameLabel = UILabel()
-    let loginNameLabel = UILabel()
-    let descriptionLabel = UILabel()
-    var imageView: UIImageView!
+    private let nameLabel = UILabel()
+    private let loginNameLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private var imageView: UIImageView!
     
     override func viewDidLoad() {
         
         view.backgroundColor = .ypBlack
     
+        setupUI()
         updateAvatar()
-        addLabels()
         addLogoutButton()
         
         if let profile = profileService.profile {
@@ -34,7 +34,18 @@ final class ProfileViewController: UIViewController {
         observeProfileImageChanges()
     }
     
-    private func addLabels() {
+    private func setupUI() {
+        
+        imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70)
+        ])
         //NAME
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
@@ -81,7 +92,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func observeProfileImageChanges() {
-           profileImageServiceObserver = NotificationCenter.default.addObserver(
+           profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
                forName: ProfileImageService.didChangeNotification,
                object: nil,
                queue: .main
@@ -89,6 +101,7 @@ final class ProfileViewController: UIViewController {
                guard let self = self else { return }
                self.updateAvatar()
            }
+//        updateAvatar()
        }
     
     private func updateProfileDetails(_ profile: ProfileService.Profile) {
@@ -98,46 +111,31 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar() {
-           // Remove previous image view if exists
-//           imageView?.removeFromSuperview()
-           
            guard let profileImageURL = ProfileImageService.shared.avatarURL,
                  let url = URL(string: profileImageURL)
            else {
-               // Use placeholder image if profile image URL is nil
-               let placeholderImage = UIImage(named: "tab_profile_active")
-               let newImageView = UIImageView(image: placeholderImage)
-               view.addSubview(newImageView)
-               newImageView.translatesAutoresizingMaskIntoConstraints = false
-               newImageView.contentMode = .scaleAspectFill
-               newImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-               newImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-               newImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-               newImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-               
-               imageView = newImageView
                return
            }
            
-           let newImageView = UIImageView()
-           view.addSubview(newImageView)
-           newImageView.translatesAutoresizingMaskIntoConstraints = false
-           newImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-           newImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-           newImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-           newImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+           let processor = RoundCornerImageProcessor(cornerRadius: 35)
            
-           imageView = newImageView
-           
-           imageView?.kf.setImage(with: url) { result in
-               switch result {
-               case .success(_):
-                   // Do nothing
-                   break
-               case .failure(let error):
-                   print("Failed to load image: \(error)")
+           imageView.kf.indicatorType = .activity
+           imageView.kf.setImage(
+               with: url,
+               placeholder: nil,
+               options: [
+                   .processor(processor),
+                   .transition(.fade(0.5))
+               ],
+               completionHandler: { result in
+                   switch result {
+                   case .success(_):
+                       break
+                   case .failure(let error):
+                       print("Failed to load Image: \(error)")
+                   }
                }
-           }
+           )
        }
     
     deinit {
