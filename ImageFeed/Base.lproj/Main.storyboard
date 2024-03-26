@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4zj-bD-o0h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4zj-bD-o0h">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +19,7 @@
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -104,25 +104,10 @@
             </objects>
             <point key="canvasLocation" x="2466" y="-501"/>
         </scene>
-        <!--Profile-->
-        <scene sceneID="vnO-ZK-wQE">
-            <objects>
-                <viewController title="Profile" id="k5w-9b-5gC" userLabel="Profile" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="yvj-7V-TiB">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="2Gf-sm-8rr"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="vCk-lh-NvQ" userLabel="Tab Bar Item"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JLH-wL-gfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3028" y="210"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="FdV-Ua-OEu">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="Luc-Ou-4ME" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="Luc-Ou-4ME" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="uEn-X4-HEV"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nAb-PJ-Z1n">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -133,10 +118,6 @@
                             <color key="backgroundColor" name="YP Black"/>
                         </tabBarAppearance>
                     </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="gkR-by-rmi"/>
-                        <segue destination="k5w-9b-5gC" kind="relationship" relationship="viewControllers" id="f9u-NX-3Cn"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fst-yC-eeK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -316,7 +297,6 @@
         <image name="Sharing" width="34" height="34"/>
         <image name="new_back_button" width="24" height="24"/>
         <image name="tab_editorial_active" width="75" height="49"/>
-        <image name="tab_profile_active" width="75" height="49"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

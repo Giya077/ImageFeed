@@ -15,6 +15,7 @@
 		1A524E0D2B9EDA6B002AB11D /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */; };
 		1A5EC0252B9BA39100A815BB /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5EC0242B9BA39100A815BB /* OAuthTokenResponseBody.swift */; };
 		1A5F98AA2BB34B5A00A3530B /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 1A5F98A92BB34B5A00A3530B /* SwiftKeychainWrapper */; };
+		1A5F98AC2BB3510100A3530B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F98AB2BB3510100A3530B /* TabBarController.swift */; };
 		1A5F9D4C2B7F2F4F0024B314 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F9D4B2B7F2F4F0024B314 /* ProfileViewController.swift */; };
 		1A94F48E2B91CE00002A06F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A94F48D2B91CE00002A06F9 /* Constants.swift */; };
 		1AAECA732B6FF6DF00A50A8B /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAECA722B6FF6DF00A50A8B /* ImagesListCell.swift */; };
@@ -59,6 +60,7 @@
 		1A3D4A742BAAB1D800C5E280 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-Pro.ttf"; path = "ImageFeed/fonts/SF-Pro.ttf"; sourceTree = "<group>"; };
 		1A5EC0242B9BA39100A815BB /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
+		1A5F98AB2BB3510100A3530B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		1A5F9D4B2B7F2F4F0024B314 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1A94F48D2B91CE00002A06F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1AAECA722B6FF6DF00A50A8B /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				1AE4B6B22B6C0EE000946163 /* Assets.xcassets */,
 				1AE4B6AF2B6C0EDF00946163 /* Main.storyboard */,
 				1AF4A4612BA864770072D652 /* UIBlockingProgressHUD.swift */,
+				1A5F98AB2BB3510100A3530B /* TabBarController.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				1ABF86952B9B99B4005B407A /* OAuth2TokenStorage.swift in Sources */,
 				1AF4A4642BA86AF40072D652 /* ProfileService.swift in Sources */,
 				1AE4B6AE2B6C0EDF00946163 /* ImagesListViewController.swift in Sources */,
+				1A5F98AC2BB3510100A3530B /* TabBarController.swift in Sources */,
 				1AE4B6AA2B6C0EDF00946163 /* AppDelegate.swift in Sources */,
 				1A5F9D4C2B7F2F4F0024B314 /* ProfileViewController.swift in Sources */,
 				1AAECA732B6FF6DF00A50A8B /* ImagesListCell.swift in Sources */,
