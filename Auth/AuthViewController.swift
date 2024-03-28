@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
@@ -66,28 +67,34 @@ final class AuthViewController: UIViewController {
         ])
     }
     
-    //    @objc func loginButtonTapped() {
-    //        let webViewVC = WebViewViewController()
-    //        navigationController?.pushViewController(webViewVC, animated: true)
-    //    }
-    
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor.ypBlack
     }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
             switch result {
             case .success(let token):
                 print("Received access token: \(token)")
                 self.delegate?.authViewController(self, didAuthenticateWithCode: code) //вызов fetchOAuthToken при получении кода через делегат
+                UIBlockingProgressHUD.dismiss()
             case.failure(let error):
                 print("Error fetching access token: \(error)")
+                UIBlockingProgressHUD.dismiss()
+                self.showAlert()
             }
         }
     }
