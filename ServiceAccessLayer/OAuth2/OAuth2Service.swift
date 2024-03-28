@@ -12,13 +12,14 @@ enum OAuthRequestError: Error {
     case urlCreationError
     case duplicateRequest
     case urlRequestError(Error)
+    case decodingError(Error)
 }
 
 final class OAuth2Service {
     
     static let shared = OAuth2Service() //точка входа
-    private init() {} // единственный экземпляр класса
-
+    private init() {}
+    
     private var task: URLSessionTask?
     private var lastCode: String?
     
@@ -37,16 +38,16 @@ final class OAuth2Service {
         URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
             switch result {
             case .success(let decodedResponse):
-                // Обработка успешного ответа
                 let accessToken = decodedResponse.accessToken
                 OAuth2TokenStorage.shared.token = accessToken
                 DispatchQueue.main.async {
                     completion(.success(accessToken))
                 }
             case .failure(let error):
-                // Обработка ошибки
                 DispatchQueue.main.async {
                     completion(.failure(error))
+                    let decodingError = OAuthRequestError.decodingError(error)
+                    print("[OAuth2Service.fetchOAuthToken]: \(decodingError)")
                 }
             }
         }.resume()

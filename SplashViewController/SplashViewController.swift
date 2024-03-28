@@ -9,7 +9,7 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     
-    private let oauth2Service = OAuth2Service.shared 
+    private let oauth2Service = OAuth2Service.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     
@@ -51,7 +51,7 @@ final class SplashViewController: UIViewController {
     
     private func navigateToAuthScreen() {
         let authViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthViewController") as! AuthViewController
-        authViewController.delegate = self // Убедитесь, что здесь self указывает на SplashViewController
+        authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true, completion: nil)
     }
@@ -70,7 +70,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard self != nil else { return }
         }
     }
-
+    
     private func fetchOAuthToken(_ code: String) {
         oauth2Service.fetchOAuthToken(with: code) { [weak self] result in
             guard let self = self else { return }
@@ -79,21 +79,20 @@ extension SplashViewController: AuthViewControllerDelegate {
                 DispatchQueue.main.async {
                     self.switchToTabBarController() //переключение экрана
                 }
-            case .failure:
-                // TODO [Sprint 11]
-                break
+            case .failure(let error):
+                print("[SplashViewController]: Error fetching OAuth token - \(error)")
             }
         }
     }
     
     func didAuthenticate(_ vc: AuthViewController) {
-          vc.dismiss(animated: true)
-         
-          guard let token = oauth2TokenStorage.token else {
-              return
-          }     //?????????
+        vc.dismiss(animated: true)
+        
+        guard let token = oauth2TokenStorage.token else {
+            return
+        }     //?????????
         fetchProfile(token)
-      }
+    }
     
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
@@ -107,8 +106,8 @@ extension SplashViewController: AuthViewControllerDelegate {
                     self.switchToTabBarController()
                     self.fetchProfileImage(profile.userName)
                 }
-            case .failure:
-                break
+            case .failure (let error):
+                print("[SplashViewController]: Error fetching profile - \(error)")
             }
         }
     }
