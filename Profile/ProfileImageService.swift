@@ -64,10 +64,10 @@ final class ProfileImageService {
                 self.avatarURL = userResult.profileImage.small
                 NotificationCenter.default
                     .post(
-                    name: ProfileImageService.didChangeNotification,
-                    object: self,
-                    userInfo: ["URL": userResult.profileImage.small]
-                )
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": userResult.profileImage.small]
+                    )
                 completion(.success(userResult.profileImage.small))
             case .failure(let error):
                 let invalidSessionError = ProfileImageServiceError.urlSessionError
@@ -77,7 +77,6 @@ final class ProfileImageService {
             }
         }
         task?.resume()
-//        self.task = task
     }
     
     private func makeURLRequest(for username: String, with token: String) -> URLRequest? {

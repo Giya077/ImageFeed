@@ -10,10 +10,9 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
     let profileService = ProfileService.shared
     
+    private var profileImageServiceObserver: NSObjectProtocol?
     private let nameLabel = UILabel()
     private let loginNameLabel = UILabel()
     private let descriptionLabel = UILabel()

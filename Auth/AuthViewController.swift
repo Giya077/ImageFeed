@@ -14,12 +14,13 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    private let showWebViewSegueIdentifier = "ShowWebView"
     
     weak var delegate: AuthViewControllerDelegate?
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var loginButton: UIButton!
+    
+    private let showWebViewSegueIdentifier = "ShowWebView"
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
@@ -85,7 +86,8 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
-        OAuth2Service.shared.fetchOAuthToken(with: code) { result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
+        OAuth2Service.shared.fetchOAuthToken(with: code) { [weak self] result in // Вызываем метод fetchOAuthToken для получения авторизационного токена
+            guard let self = self else { return }
             switch result {
             case .success(let token):
                 print("Received access token: \(token)")
@@ -98,6 +100,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             }
         }
     }
+    
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
