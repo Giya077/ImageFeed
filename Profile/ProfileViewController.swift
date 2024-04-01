@@ -35,9 +35,11 @@ final class ProfileViewController: UIViewController {
     
     private func setupUI() {
         
+        //IMAGE
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
+        imageView.layer.masksToBounds = true
         
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -112,11 +114,9 @@ final class ProfileViewController: UIViewController {
     private func updateAvatar() {
            guard let profileImageURL = ProfileImageService.shared.avatarURL,
                  let url = URL(string: profileImageURL)
-           else {
-               return
-           }
+           else { return }
            
-           let processor = RoundCornerImageProcessor(cornerRadius: 35)
+           let processor = RoundCornerImageProcessor(cornerRadius: 45)
            
            imageView.kf.indicatorType = .activity
            imageView.kf.setImage(
