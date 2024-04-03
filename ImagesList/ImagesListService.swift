@@ -63,6 +63,8 @@ final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private (set) var photos: [Photo] = []
+    
+    
     private var lastLoadedPage: Int?
     private var isFetching: Bool = false
     
@@ -84,6 +86,7 @@ final class ImagesListService {
         request.httpMethod = "GET"
         return request
     }
+    
     
     func numberOfLoadedPhotos() -> Int {
         return photos.count
@@ -125,7 +128,14 @@ final class ImagesListService {
                         user: user
                     )
                 }
-                self.photos.append(contentsOf: photos)
+                
+                let uniquePhotos = photos.filter { newPhoto in
+                    !self.photos.contains { existingPhoto in
+                        existingPhoto.id == newPhoto.id // Проверяем, есть ли в массиве уже фотография с таким же id
+                    }
+                }
+                self.photos.append(contentsOf: uniquePhotos)
+                
                 self.lastLoadedPage = nextPage
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
             case .failure(_):
