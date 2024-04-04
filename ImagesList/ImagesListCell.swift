@@ -27,6 +27,13 @@ final class ImagesListCell: UITableViewCell {
         return formatter
     } ()
     
+    var likeButtonTapped: ((Bool) -> Void)?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
+    }
+    
     func configure(with photo: Photo) {
         cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(
@@ -43,5 +50,20 @@ final class ImagesListCell: UITableViewCell {
         } else {
             dateLabel.text = "Date not available"
         }
+        
+        let likeImage = photo.isLiked ? UIImage(named: "like_on"): UIImage(named: "like_off")
+        likeButton.setImage(likeImage, for: .normal)
+    }
+    
+    
+    @IBAction func likeButtonPressed(_ sender: UIButton) {
+         guard let currentImage = likeButton.image(for: .normal) else { return }
+         
+         let isLiked = currentImage == UIImage(named: "like_on")
+         let newImage = isLiked ? UIImage(named: "like_off") : UIImage(named: "like_on")
+         likeButton.setImage(newImage, for: .normal)
+         
+         // Вызываем обработчик нажатия на кнопку лайка
+        likeButtonTapped?(isLiked)
     }
  }

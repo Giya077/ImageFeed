@@ -20,7 +20,7 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLicked: Bool
+    var isLiked: Bool
     let user: User // Используем упрощенную информацию о пользователе
 }
 
@@ -30,7 +30,7 @@ struct PhotoResult: Codable {
     let width: Int
     let height: Int
     let description: String?
-    let likedByUser: Bool?
+    let liked_by_user: Bool?
     let urls: UrlsResult
     let user: UserResult // Обновляем для парсинга информации о пользователе
     
@@ -124,18 +124,16 @@ final class ImagesListService {
                         welcomeDescription: photoResult.description,
                         thumbImageURL: photoResult.urls.thumb,
                         largeImageURL: photoResult.urls.regular,
-                        isLicked: photoResult.likedByUser ?? false,
+                        isLiked: photoResult.liked_by_user ?? false,
                         user: user
                     )
                 }
-                
                 let uniquePhotos = photos.filter { newPhoto in
                     !self.photos.contains { existingPhoto in
                         existingPhoto.id == newPhoto.id // Проверяем, есть ли в массиве уже фотография с таким же id
                     }
                 }
                 self.photos.append(contentsOf: uniquePhotos)
-                
                 self.lastLoadedPage = nextPage
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
             case .failure(_):

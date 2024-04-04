@@ -1,6 +1,7 @@
 
 
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSequeIdentifier = "ShowSingleImage"
@@ -11,7 +12,6 @@ final class ImagesListViewController: UIViewController {
     
     private var photos: [Photo] = []
     
-    //    private var photosName: [String] = Array(0..<20).map{ "\($0)" } //создаёт массив чисел от 0 до 19 и возвращает массив строк
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,15 +79,22 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController {
     func configCell(_ cell: ImagesListCell, with photo: Photo) {
         // Загрузка изображения с помощью Kingfisher
-        if let url = URL(string: photo.thumbImageURL) {
-            cell.cellImage.kf.setImage(with: url)
+        if let url = URL(string: photo.largeImageURL) {
+            cell.cellImage.kf.setImage(with: url) { result in
+                switch result {
+                case.success(_):
+                    break
+                case.failure(let error):
+                    print("Failed to load image: \(error)")
+                }
+            }
         }
         
         // Настройка остальных элементов ячейки
         cell.dateLabel.text = dateFormatter.string(from: Date())
-        let isLiked = photo.isLicked
-        let likeImage = isLiked ? UIImage(named: "like_on") : UIImage(named: "like_off")
-        cell.likeButton.setImage(likeImage, for: .normal)
+//        let isLiked = photo.isLiked
+//        let likeImage = isLiked ? UIImage(named: "like_on") : UIImage(named: "like_off")
+//        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 
