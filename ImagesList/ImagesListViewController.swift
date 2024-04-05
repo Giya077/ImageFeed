@@ -89,12 +89,8 @@ extension ImagesListViewController {
                 }
             }
         }
-        
-        // Настройка остальных элементов ячейки
+    
         cell.dateLabel.text = dateFormatter.string(from: Date())
-//        let isLiked = photo.isLiked
-//        let likeImage = isLiked ? UIImage(named: "like_on") : UIImage(named: "like_off")
-//        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 

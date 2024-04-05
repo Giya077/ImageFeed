@@ -15,6 +15,8 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     
+    var photoId: String?
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
@@ -35,6 +37,8 @@ final class ImagesListCell: UITableViewCell {
     }
     
     func configure(with photo: Photo) {
+        self.photoId = photo.id
+        
         cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(
             with: URL(string: photo.thumbImageURL),
@@ -51,19 +55,32 @@ final class ImagesListCell: UITableViewCell {
             dateLabel.text = "Date not available"
         }
         
+        
         let likeImage = photo.isLiked ? UIImage(named: "like_on"): UIImage(named: "like_off")
         likeButton.setImage(likeImage, for: .normal)
     }
     
     
     @IBAction func likeButtonPressed(_ sender: UIButton) {
-         guard let currentImage = likeButton.image(for: .normal) else { return }
-         
-         let isLiked = currentImage == UIImage(named: "like_on")
-         let newImage = isLiked ? UIImage(named: "like_off") : UIImage(named: "like_on")
-         likeButton.setImage(newImage, for: .normal)
-         
-         // Вызываем обработчик нажатия на кнопку лайка
-        likeButtonTapped?(isLiked)
+        guard let currentImage = likeButton.image(for: .normal), let photoId = self.photoId else {
+            print("Error: photoId is nil")
+            return
+        }
+        
+        let isLiked = currentImage == UIImage(named: "like_on")
+        let newImage = isLiked ? UIImage(named: "like_off") : UIImage(named: "like_on")
+        likeButton.setImage(newImage, for: .normal)
+        
+        ImagesListService.shared.changeLike(photoId: photoId, isLiked: isLiked) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    print("Like status changed successfully")
+                    self?.likeButtonTapped?(isLiked)
+                case .failure(let error):
+                    print("Failed to change like status: \(error.localizedDescription)")
+                }
+            }
+        }
     }
- }
+}

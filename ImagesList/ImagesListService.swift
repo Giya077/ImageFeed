@@ -24,6 +24,7 @@ struct Photo {
     let user: User // Используем упрощенную информацию о пользователе
 }
 
+
 struct PhotoResult: Codable {
     let id: String
     let created_at: String
@@ -92,7 +93,7 @@ final class ImagesListService {
         return photos.count
     }
     
-     func fetchPhotosNextPage() {
+    func fetchPhotosNextPage() {
         
         guard !isFetching else { return } // Проверяем, не выполняется ли уже загрузка
         
@@ -142,6 +143,51 @@ final class ImagesListService {
             }
             self.isFetching = false
         }
+        task.resume()
+    }
+    
+    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let accessToken = tokenStorage.token else {
+            print("Token is nil")
+            completion(.failure(URLError(.notConnectedToInternet)))
+            return
+        }
+        
+        let httpMethod = isLiked ? "POST" : "DELETE"
+        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+        
+        guard let url = URL(string: urlString) else {
+            completion(.failure(URLError(.badURL)))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+                completion(.failure(NSError(domain: "ImagesListService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to change like status"])))
+                return
+            }
+            
+            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                var updatedPhoto = self.photos[index]
+                updatedPhoto.isLiked = isLiked
+                self.photos[index] = updatedPhoto
+                
+                NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
+            }
+            
+            completion(.success(()))
+        }
+        
         task.resume()
     }
 }
