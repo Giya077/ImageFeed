@@ -2,6 +2,7 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSequeIdentifier = "ShowSingleImage"
@@ -70,6 +71,7 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as! ImagesListCell
         
         let photo = photos[indexPath.row]
+        cell.delegate = self // Устанавливаем контроллер в качестве делегата ячейки
         cell.configure(with: photo)
         
         return cell
@@ -78,18 +80,6 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
     func configCell(_ cell: ImagesListCell, with photo: Photo) {
-        // Загрузка изображения с помощью Kingfisher
-        if let url = URL(string: photo.largeImageURL) {
-            cell.cellImage.kf.setImage(with: url) { result in
-                switch result {
-                case.success(_):
-                    break
-                case.failure(let error):
-                    print("Failed to load image: \(error)")
-                }
-            }
-        }
-    
         cell.dateLabel.text = dateFormatter.string(from: Date())
     }
 }
@@ -118,3 +108,27 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imagesListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell),
+              let photoId = cell.photoId else { return }
+        
+        var photo = photos[indexPath.row]
+        let isLiked = !photo.isLiked // Инвертируем текущее состояние лайка
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photoId, isLiked: isLiked) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    print("Like status changed successfully")
+                    photo.isLiked = isLiked
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                    UIBlockingProgressHUD.dismiss()
+                case .failure(let error):
+                    print("Failed to change like status: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+}

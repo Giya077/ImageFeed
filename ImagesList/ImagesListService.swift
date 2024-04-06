@@ -157,7 +157,7 @@ final class ImagesListService {
         let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
         
         guard let url = URL(string: urlString) else {
-            completion(.failure(URLError(.badURL)))
+            completion(.failure(ImagesListServiceError.urlError))
             return
         }
         

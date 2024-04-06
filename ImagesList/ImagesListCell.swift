@@ -9,11 +9,17 @@ import Foundation
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imagesListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
+    
+    weak var delegate: ImagesListCellDelegate?
     
     var photoId: String?
     
@@ -29,7 +35,7 @@ final class ImagesListCell: UITableViewCell {
         return formatter
     } ()
     
-    var likeButtonTapped: ((Bool) -> Void)?
+//    var likeButtonTapped: ((Bool) -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -55,14 +61,13 @@ final class ImagesListCell: UITableViewCell {
             dateLabel.text = "Date not available"
         }
         
-        
         let likeImage = photo.isLiked ? UIImage(named: "like_on"): UIImage(named: "like_off")
         likeButton.setImage(likeImage, for: .normal)
     }
     
     
     @IBAction func likeButtonPressed(_ sender: UIButton) {
-        guard let currentImage = likeButton.image(for: .normal), let photoId = self.photoId else {
+        guard let currentImage = likeButton.image(for: .normal), let _ = self.photoId else {
             print("Error: photoId is nil")
             return
         }
@@ -71,16 +76,6 @@ final class ImagesListCell: UITableViewCell {
         let newImage = isLiked ? UIImage(named: "like_off") : UIImage(named: "like_on")
         likeButton.setImage(newImage, for: .normal)
         
-        ImagesListService.shared.changeLike(photoId: photoId, isLiked: isLiked) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    print("Like status changed successfully")
-                    self?.likeButtonTapped?(isLiked)
-                case .failure(let error):
-                    print("Failed to change like status: \(error.localizedDescription)")
-                }
-            }
-        }
+        delegate?.imagesListCellDidTapLike(self)
     }
 }
