@@ -193,4 +193,10 @@ final class ImagesListService {
         
         task.resume()
     }
+    
+    func resetImagesList() {
+        photos.removeAll()
+        lastLoadedPage = nil
+        isFetching = false
+    }
 }

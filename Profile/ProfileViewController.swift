@@ -145,8 +145,14 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
+        ProfileLogoutService.shared.logout()
+        resetUI()
+    }
+    
+    private func resetUI() {
         nameLabel.text = ""
         loginNameLabel.text = ""
         descriptionLabel.text = ""
+        imageView.image = nil
     }
 }
