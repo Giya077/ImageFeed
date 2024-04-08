@@ -40,7 +40,7 @@ final class ImagesListViewController: UIViewController {
            let indexPath = sender as? IndexPath {
             
             let photo = photos[indexPath.row]
-            //            viewController.photo = photo
+            viewController.fullImageURL = photo.fullImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }

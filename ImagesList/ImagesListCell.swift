@@ -35,8 +35,6 @@ final class ImagesListCell: UITableViewCell {
         return formatter
     } ()
     
-//    var likeButtonTapped: ((Bool) -> Void)?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
@@ -47,10 +45,10 @@ final class ImagesListCell: UITableViewCell {
         
         cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(
-            with: URL(string: photo.thumbImageURL),
+            with: URL(string: photo.regularImageURL),
             placeholder: UIImage(named: "Stub"),
             options: [
-                .transition(.fade(0.2)),
+                .transition(.fade(0.9)),
                 .processor(DownsamplingImageProcessor(size: cellImage.bounds.size))
             ]
         )

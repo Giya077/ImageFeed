@@ -19,7 +19,8 @@ struct Photo {
     let createdAt: Date?
     let welcomeDescription: String?
     let thumbImageURL: String
-    let largeImageURL: String
+    let regularImageURL: String
+    let fullImageURL : String
     var isLiked: Bool
     let user: User // Используем упрощенную информацию о пользователе
 }
@@ -56,6 +57,7 @@ struct ProfileImage: Codable {
 struct UrlsResult: Codable {
     let thumb: String
     let regular: String
+    let full: String
 }
 
 final class ImagesListService {
@@ -124,7 +126,8 @@ final class ImagesListService {
                         createdAt: photoResult.createdAtDate,
                         welcomeDescription: photoResult.description,
                         thumbImageURL: photoResult.urls.thumb,
-                        largeImageURL: photoResult.urls.regular,
+                        regularImageURL: photoResult.urls.regular, 
+                        fullImageURL: photoResult.urls.full,
                         isLiked: photoResult.liked_by_user ?? false,
                         user: user
                     )

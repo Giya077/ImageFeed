@@ -6,16 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     
-    var image: UIImage! {
-        didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
+    var fullImageURL: String?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet weak var shareButton: UIButton!
@@ -26,16 +21,9 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
-        centerImageInfoScrollView()
-        
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        setupScrollView()
+        loadFullImage()
+        imageView.contentMode = .scaleAspectFit
         view.addSubview(scrollView)
         
         NSLayoutConstraint.activate([
@@ -46,16 +34,8 @@ final class SingleImageViewController: UIViewController {
         ])
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView) // Добавляем imageView на view контроллера
-        view.bringSubviewToFront(shareButton)
-        view.bringSubviewToFront(backButton)
-        
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(imageView)
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(shareButton)
@@ -71,7 +51,6 @@ final class SingleImageViewController: UIViewController {
         view.addSubview(backButton)
         
         NSLayoutConstraint.activate([
-            
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             backButton.widthAnchor.constraint(equalToConstant: 48),
@@ -79,16 +58,63 @@ final class SingleImageViewController: UIViewController {
         ])
     }
     
-    @IBAction private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
+    private func setupScrollView() {
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
+        scrollView.delegate = self
+
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(sender:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapGesture)
     }
     
-    @IBAction private func didTapShareButton(_ sender: UIButton) {
-        guard let image = imageView.image else { return }
-        let share = UIActivityViewController(
-            activityItems: [image],
-            applicationActivities: nil)
-        present(share, animated: true, completion: nil )
+    @objc private func handleDoubleTap(sender: UITapGestureRecognizer) {
+        if scrollView.zoomScale == scrollView.minimumZoomScale {
+            let zoomRect = zoomRectForScale(scale: scrollView.maximumZoomScale, center: sender.location(in: sender.view))
+            scrollView.zoom(to: zoomRect, animated: true)
+        } else {
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        }
+    }
+    
+    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
+        let size = CGSize(width: scrollView.frame.size.width / scale,
+                          height: scrollView.frame.size.height / scale)
+        let origin = CGPoint(x: center.x - size.width / 2,
+                             y: center.y - size.height / 2)
+        return CGRect(origin: origin, size: size)
+    }
+    
+    private func loadFullImage() {
+        guard let fullImageURLString = fullImageURL, let fullImageURL = URL(string: fullImageURLString) else {
+            print("Invalid full image URL")
+            return
+        }
+        
+        UIBlockingProgressHUD.show()
+        
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                // Установка изображения и масштабирование в scrollView
+                self.imageView.image = imageResult.image
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Ошибка", message: "Что-то пошло не так. Попробовать ещё раз?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Не надо", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Занова", style: .default, handler: { [weak self] _ in
+            self?.loadFullImage()
+        }))
+        present(alert, animated: true, completion: nil)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -107,34 +133,37 @@ final class SingleImageViewController: UIViewController {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
+    
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
+        guard let image = imageView.image else { return }
+        let share = UIActivityViewController(
+            activityItems: [image],
+            applicationActivities: nil)
+        present(share, animated: true, completion: nil)
+    }
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? { // Возвращаем imageView для масштабирования в scrollView
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
     }
     
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) { // Вызывается после окончания масштабирования, центрируем изображение
-        
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        centerImageInScrollView()
     }
     
-    // Центрируем изображение в scrollView
-    private func centerImageInfoScrollView() {
-        guard imageView.image != nil else { return }
+    private func centerImageInScrollView() {
+        guard let image = imageView.image else { return }
         
-        let imageViewSize = imageView.frame.size
+        _ = imageView.frame.size
         let scrollViewSize = scrollView.bounds.size
         
-        var verticalPadding: CGFloat = 0
-        var horizontalPadding: CGFloat = 0
-        
-        if imageViewSize.width < scrollViewSize.width {
-            horizontalPadding = (scrollViewSize.width - imageViewSize.width) / 2
-        }
-        
-        if imageViewSize.height < scrollViewSize.height {
-            verticalPadding = (scrollViewSize.height - imageViewSize.height) / 2
-        }
+        let verticalPadding = max(0, (scrollViewSize.height - image.size.height * scrollView.zoomScale) / 2)
+        let horizontalPadding = max(0, (scrollViewSize.width - image.size.width * scrollView.zoomScale) / 2)
         
         scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
     }
