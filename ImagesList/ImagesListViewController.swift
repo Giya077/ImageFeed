@@ -7,6 +7,7 @@ import ProgressHUD
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSequeIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
+    private var imagesListControllerObserver: NSObjectProtocol?
     
     @IBOutlet
     private var tableView: UITableView!
@@ -19,11 +20,8 @@ final class ImagesListViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewAnimated), name: ImagesListService.didChangeNotification, object: nil)
-        
+        observeImagesListControllerChanges()
         imagesListService.fetchPhotosNextPage()
     }
     
@@ -33,6 +31,22 @@ final class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     } ()
+    
+    
+    private func observeImagesListControllerChanges() {
+        imagesListControllerObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+            self?.updateTableViewAnimated()
+        }
+    }
+    
+    deinit {
+        if let observer = imagesListControllerObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSequeIdentifier,
@@ -59,6 +73,8 @@ final class ImagesListViewController: UIViewController {
             }, completion: nil)
         }
     }
+    
+    
 }
 
 
@@ -110,20 +126,19 @@ extension ImagesListViewController: UITableViewDelegate {
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imagesListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell),
-              let photoId = cell.photoId else { return }
-        
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
         var photo = photos[indexPath.row]
+        
         let isLiked = !photo.isLiked // Инвертируем текущее состояние лайка
         
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photoId, isLiked: isLiked) { [weak self] result in
+        imagesListService.changeLike(photoId: photo.id, isLiked: isLiked) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     print("Like status changed successfully")
                     photo.isLiked = isLiked
-                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                    cell.updateLikeButton(isLiked: isLiked) // Обновляем только кнопку лайка в ячейке
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     print("Failed to change like status: \(error.localizedDescription)")

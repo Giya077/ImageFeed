@@ -102,7 +102,6 @@ final class ProfileViewController: UIViewController {
                guard let self = self else { return }
                self.updateAvatar()
            }
-//        updateAvatar()
        }
     
     private func updateProfileDetails(_ profile: ProfileService.Profile) {
@@ -145,8 +144,18 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        ProfileLogoutService.shared.logout()
-        resetUI()
+        
+        let alertController = UIAlertController(title: "Выход", message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let logoutAction = UIAlertAction(title: "Выход", style: .destructive) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            self?.resetUI()
+        }
+        
+        alertController.addAction(logoutAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func resetUI() {

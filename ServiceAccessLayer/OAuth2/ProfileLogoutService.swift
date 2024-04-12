@@ -43,13 +43,8 @@ final class ProfileLogoutService {
             return
         }
         
-        // Создаем экземпляр начального контроллера
         let initialViewController =  SplashViewController()
-        
-        // Устанавливаем созданный контроллер как корневой
         window.rootViewController = initialViewController
-        
-        // Применяем изменения
         window.makeKeyAndVisible()
     }
     

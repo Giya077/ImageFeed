@@ -22,7 +22,7 @@ struct Photo {
     let regularImageURL: String
     let fullImageURL : String
     var isLiked: Bool
-    let user: User // Используем упрощенную информацию о пользователе
+    let user: User
 }
 
 
@@ -34,7 +34,7 @@ struct PhotoResult: Codable {
     let description: String?
     let liked_by_user: Bool?
     let urls: UrlsResult
-    let user: UserResult // Обновляем для парсинга информации о пользователе
+    let user: UserResult
     
     var createdAtDate: Date? {
         let dateFormatter = ISO8601DateFormatter()

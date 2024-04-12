@@ -18,7 +18,6 @@ final class SplashViewController: UIViewController {
         
         view.backgroundColor = .ypBlack
         setupUI()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,7 +89,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         
         guard let token = oauth2TokenStorage.token else {
             return
-        }     //?????????
+        }
         fetchProfile(token)
     }
     
