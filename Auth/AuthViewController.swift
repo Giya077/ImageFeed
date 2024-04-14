@@ -96,7 +96,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case.failure(let error):
                 print("Error fetching access token: \(error)")
                 UIBlockingProgressHUD.dismiss()
-                self.showAlert()
+                showAlert()
             }
         }
     }

@@ -121,4 +121,8 @@ final class ProfileService {
         task.resume()
         self.task = task
     }
+    
+    func resetProfile() {
+        profile = nil
+    }
 }

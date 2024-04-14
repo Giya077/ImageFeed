@@ -17,7 +17,7 @@ enum OAuthRequestError: Error {
 
 final class OAuth2Service {
     
-    static let shared = OAuth2Service() //точка входа
+    static let shared = OAuth2Service()
     private init() {}
     
     private var task: URLSessionTask?

@@ -34,7 +34,7 @@ final class ProfileImageService {
     }
     
     struct ProfileImageURL: Codable {
-        let small: String
+        let large: String
     }
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
@@ -61,14 +61,14 @@ final class ProfileImageService {
         task = session.objectTask(for: request) { (result: Result<UserResult, Error>) in
             switch result {
             case.success(let userResult):
-                self.avatarURL = userResult.profileImage.small
+                self.avatarURL = userResult.profileImage.large
                 NotificationCenter.default
                     .post(
                         name: ProfileImageService.didChangeNotification,
                         object: self,
-                        userInfo: ["URL": userResult.profileImage.small]
+                        userInfo: ["URL": userResult.profileImage.large]
                     )
-                completion(.success(userResult.profileImage.small))
+                completion(.success(userResult.profileImage.large))
             case .failure(let error):
                 let invalidSessionError = ProfileImageServiceError.urlSessionError
                 print("[objectTask]: fetchProfileImageURL - \(invalidSessionError)")
@@ -87,5 +87,9 @@ final class ProfileImageService {
         request.httpMethod = "GET"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+    
+    func resetAvatar() {
+        avatarURL = nil
     }
 }

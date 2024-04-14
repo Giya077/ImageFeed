@@ -35,9 +35,11 @@ final class ProfileViewController: UIViewController {
     
     private func setupUI() {
         
+        //IMAGE
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
+        imageView.layer.masksToBounds = true
         
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -100,7 +102,6 @@ final class ProfileViewController: UIViewController {
                guard let self = self else { return }
                self.updateAvatar()
            }
-//        updateAvatar()
        }
     
     private func updateProfileDetails(_ profile: ProfileService.Profile) {
@@ -112,11 +113,9 @@ final class ProfileViewController: UIViewController {
     private func updateAvatar() {
            guard let profileImageURL = ProfileImageService.shared.avatarURL,
                  let url = URL(string: profileImageURL)
-           else {
-               return
-           }
+           else { return }
            
-           let processor = RoundCornerImageProcessor(cornerRadius: 35)
+           let processor = RoundCornerImageProcessor(cornerRadius: 45)
            
            imageView.kf.indicatorType = .activity
            imageView.kf.setImage(
@@ -145,8 +144,24 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
+        
+        let alertController = UIAlertController(title: "Выход", message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let logoutAction = UIAlertAction(title: "Выход", style: .destructive) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            self?.resetUI()
+        }
+        
+        alertController.addAction(logoutAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func resetUI() {
         nameLabel.text = ""
         loginNameLabel.text = ""
         descriptionLabel.text = ""
+        imageView.image = nil
     }
 }
