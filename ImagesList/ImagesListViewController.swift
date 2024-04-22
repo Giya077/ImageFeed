@@ -14,6 +14,12 @@ final class ImagesListViewController: UIViewController {
     
     private var photos: [Photo] = []
     
+    private lazy var dateFormatter:DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    } ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +30,6 @@ final class ImagesListViewController: UIViewController {
         observeImagesListControllerChanges()
         imagesListService.fetchPhotosNextPage()
     }
-    
-    private lazy var dateFormatter:DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    } ()
-    
     
     private func observeImagesListControllerChanges() {
         imagesListControllerObserver = NotificationCenter.default.addObserver(
@@ -73,8 +71,6 @@ final class ImagesListViewController: UIViewController {
             }, completion: nil)
         }
     }
-    
-    
 }
 
 
