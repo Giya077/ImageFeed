@@ -7,13 +7,17 @@
 
 import Foundation
 
+protocol ProfileServiceProtocol {
+    var profile: ProfileService.Profile? {get}
+}
+
 enum ProfileServiceError: Error {
     case invalidURL
     case urlRequestError(Error)
     case urlSessionError
 }
 
-final class ProfileService {
+final class ProfileService: ProfileServiceProtocol {
     
     private(set) var profile: Profile?
     static let shared = ProfileService()

@@ -8,29 +8,33 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewProtocol: AnyObject {
+    func updateProfileDetails(_ profile: ProfileService.Profile)
+    func updateAvatar(with imageURL: String)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     let profileService = ProfileService.shared
     
+    var presenter: ProfilePresenterProtocol!
+    
     private var profileImageServiceObserver: NSObjectProtocol?
+    
     private let nameLabel = UILabel()
     private let loginNameLabel = UILabel()
     private let descriptionLabel = UILabel()
     private var imageView: UIImageView!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        
+        presenter = ProfilePresenter(view: self, profileService: profileService, profileImageService: ProfileImageService.shared, profileLogoutService: ProfileLogoutService.shared)
         
         view.backgroundColor = .ypBlack
-    
-        setupUI()
-        updateAvatar()
+        presenter.viewDidLoad()
         addLogoutButton()
-        
-        if let profile = profileService.profile {
-            updateProfileDetails(profile)
-        }
-        
-        observeProfileImageChanges()
     }
     
     private func setupUI() {
@@ -92,55 +96,38 @@ final class ProfileViewController: UIViewController {
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
-    private func observeProfileImageChanges() {
-           profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-               forName: ProfileImageService.didChangeNotification,
-               object: nil,
-               queue: .main
-           ) { [weak self] _ in
-               guard let self = self else { return }
-               self.updateAvatar()
-           }
-       }
-    
-    private func updateProfileDetails(_ profile: ProfileService.Profile) {
+
+    func updateProfileDetails(_ profile: ProfileService.Profile) {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio ?? ""
     }
     
-    private func updateAvatar() {
-           guard let profileImageURL = ProfileImageService.shared.avatarURL,
-                 let url = URL(string: profileImageURL)
-           else { return }
-           
-           let processor = RoundCornerImageProcessor(cornerRadius: 45)
-           
-           imageView.kf.indicatorType = .activity
-           imageView.kf.setImage(
-               with: url,
-               placeholder: nil,
-               options: [
-                   .processor(processor),
-                   .transition(.fade(0.5))
-               ],
-               completionHandler: { result in
-                   switch result {
-                   case .success(_):
-                       break
-                   case .failure(let error):
-                       print("Failed to load Image: \(error)")
-                   }
+    func updateAvatar(with imageURL: String) {
+        guard let profileImageURL = ProfileImageService.shared.avatarURL,
+                         let url = URL(string: profileImageURL)
+                   else { return }
+                   
+                   let processor = RoundCornerImageProcessor(cornerRadius: 45)
+                   
+                   imageView.kf.indicatorType = .activity
+                   imageView.kf.setImage(
+                       with: url,
+                       placeholder: nil,
+                       options: [
+                           .processor(processor),
+                           .transition(.fade(0.5))
+                       ],
+                       completionHandler: { result in
+                           switch result {
+                           case .success(_):
+                               break
+                           case .failure(let error):
+                               print("Failed to load Image: \(error)")
+                           }
+                       }
+                   )
                }
-           )
-       }
-    
-    deinit {
-        if let observer = profileImageServiceObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
     
     @objc
     private func didTapButton() {
