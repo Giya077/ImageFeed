@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
 protocol ProfilePresenterProtocol: AnyObject {
     func viewDidLoad()
-    func didTapLogout()
     func observeProfileImageChanges()
+    func showLogoutAlert(in viewController: ProfileViewController)
+    func resetUI()
 }
 
 class ProfilePresenter: ProfilePresenterProtocol {
+    
     weak var view: ProfileViewProtocol?
     private let profileService: ProfileServiceProtocol
     private let profileImageService: ProfileImageServiceProtocol
@@ -36,8 +39,22 @@ class ProfilePresenter: ProfilePresenterProtocol {
         updateAvatar()
     }
     
-    func didTapLogout() {
-        profileLogoutService.logout() /// ????????/
+    func showLogoutAlert(in viewController: ProfileViewController) {
+        let alertController = UIAlertController(title: "Выход", message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let logoutAction = UIAlertAction(title: "Выход", style: .destructive) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            self?.resetUI()
+        }
+        
+        alertController.addAction(logoutAction)
+        viewController.present(alertController, animated: true, completion: nil)
+    }
+    
+    func resetUI() {
+        view?.resetUI()
     }
     
     func observeProfileImageChanges() {
@@ -54,7 +71,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
         guard let profileImageURL = profileImageService.avatarURL else {
             return
         }
-        // Update the avatar image in the view
         view?.updateAvatar(with: profileImageURL)
     }
     

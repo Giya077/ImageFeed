@@ -11,6 +11,7 @@ import Kingfisher
 protocol ProfileViewProtocol: AnyObject {
     func updateProfileDetails(_ profile: ProfileService.Profile)
     func updateAvatar(with imageURL: String)
+    func resetUI()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewProtocol {
@@ -96,7 +97,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
-
+    
     func updateProfileDetails(_ profile: ProfileService.Profile) {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
@@ -105,47 +106,36 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     func updateAvatar(with imageURL: String) {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
-                         let url = URL(string: profileImageURL)
-                   else { return }
-                   
-                   let processor = RoundCornerImageProcessor(cornerRadius: 45)
-                   
-                   imageView.kf.indicatorType = .activity
-                   imageView.kf.setImage(
-                       with: url,
-                       placeholder: nil,
-                       options: [
-                           .processor(processor),
-                           .transition(.fade(0.5))
-                       ],
-                       completionHandler: { result in
-                           switch result {
-                           case .success(_):
-                               break
-                           case .failure(let error):
-                               print("Failed to load Image: \(error)")
-                           }
-                       }
-                   )
-               }
+              let url = URL(string: profileImageURL)
+        else { return }
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 45)
+        
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(
+            with: url,
+            placeholder: nil,
+            options: [
+                .processor(processor),
+                .transition(.fade(0.5))
+            ],
+            completionHandler: { result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let error):
+                    print("Failed to load Image: \(error)")
+                }
+            }
+        )
+    }
     
     @objc
     private func didTapButton() {
-        
-        let alertController = UIAlertController(title: "Выход", message: "Вы уверены, что хотите выйти?", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        let logoutAction = UIAlertAction(title: "Выход", style: .destructive) { [weak self] _ in
-            ProfileLogoutService.shared.logout()
-            self?.resetUI()
-        }
-        
-        alertController.addAction(logoutAction)
-        present(alertController, animated: true, completion: nil)
+        presenter.showLogoutAlert(in: self)
     }
     
-    private func resetUI() {
+    func resetUI() {
         nameLabel.text = ""
         loginNameLabel.text = ""
         descriptionLabel.text = ""
