@@ -20,7 +20,7 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("SingleImageViewController loaded")
         setupScrollView()
         loadFullImage()
         imageView.contentMode = .scaleAspectFit

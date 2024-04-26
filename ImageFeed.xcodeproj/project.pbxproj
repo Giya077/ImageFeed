@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A0A08192B94D77900BF45C8 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0A08182B94D77900BF45C8 /* WebViewViewController.swift */; };
+		1A0E50CD2BD91C6900AEC672 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E50CC2BD91C6900AEC672 /* ImagesListPresenter.swift */; };
 		1A2CC7EF2B998FA9003C1F6A /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2CC7EE2B998FA9003C1F6A /* OAuth2Service.swift */; };
 		1A34B07B2BA73877007C538A /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 1A34B07A2BA73877007C538A /* ProgressHUD */; };
 		1A36F6A22BB02B6E00B83985 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1A36F6A12BB02B6E00B83985 /* Kingfisher */; };
@@ -63,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		1A0A08182B94D77900BF45C8 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		1A0E50CC2BD91C6900AEC672 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
 		1A2CC7EE2B998FA9003C1F6A /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		1A3D4A742BAAB1D800C5E280 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		1A524E0C2B9EDA6B002AB11D /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-Pro.ttf"; path = "ImageFeed/fonts/SF-Pro.ttf"; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		1AAECA712B6FF6BF00A50A8B /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
+				1A0E50CC2BD91C6900AEC672 /* ImagesListPresenter.swift */,
 				1AE4B6AD2B6C0EDF00946163 /* ImagesListViewController.swift */,
 				1AAECA722B6FF6DF00A50A8B /* ImagesListCell.swift */,
 				1A7C42142BBA89B7007E494D /* ImagesListService.swift */,
@@ -429,6 +432,7 @@
 				1ADD8D222BD18D1100C4011B /* WebViewPresenter.swift in Sources */,
 				1ABF86932B9B894B005B407A /* URLSession+data, objectTask.swift in Sources */,
 				1A0A08192B94D77900BF45C8 /* WebViewViewController.swift in Sources */,
+				1A0E50CD2BD91C6900AEC672 /* ImagesListPresenter.swift in Sources */,
 				1A2CC7EF2B998FA9003C1F6A /* OAuth2Service.swift in Sources */,
 				1AE4B6AC2B6C0EDF00946163 /* SceneDelegate.swift in Sources */,
 			);
