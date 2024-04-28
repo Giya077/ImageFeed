@@ -32,7 +32,6 @@ class ImagesListViewControllerTests: XCTestCase {
     }
 
     func testPerformSegueCalled() {
-        // Предположим, у вас есть фото для теста
         let photo = Photo(id: "1", size: CGSize(width: 100, height: 100), createdAt: Date(), welcomeDescription: "Test", thumbImageURL: "thumbURL", regularImageURL: "regularURL", fullImageURL: "fullURL", isLiked: false, user: User(id: "1", username: "testuser", name: "Test User", profileImageURL: "profileURL"))
         spyView.performSegueToSingleImage(with: photo)
 
