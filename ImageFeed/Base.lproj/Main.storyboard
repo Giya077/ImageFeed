@@ -201,6 +201,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psi-YH-FD1">
                                 <rect key="frame" x="57" y="356" width="167" height="277"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <fontDescription key="fontDescription" name="SFPro-Bold" family="SF Pro" pointSize="15"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
@@ -243,7 +244,7 @@
         <!--WebViewViewController-->
         <scene sceneID="wwZ-Nw-nry">
             <objects>
-                <viewController storyboardIdentifier="ShowWebView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kbi-u0-2vb" userLabel="WebViewViewController" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="kbi-u0-2vb" userLabel="WebViewViewController" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3bo-l2-3mM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -264,6 +265,9 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="caJ-xu-IVx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView">
+                            <bool key="isElement" value="YES"/>
+                        </accessibility>
                     </view>
                     <navigationItem key="navigationItem" id="s5E-62-BvP"/>
                     <connections>

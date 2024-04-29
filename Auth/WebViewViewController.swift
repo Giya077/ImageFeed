@@ -33,6 +33,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        webView.accessibilityIdentifier = "UnsplashWebView"
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
