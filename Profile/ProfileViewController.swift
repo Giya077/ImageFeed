@@ -38,6 +38,10 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         addLogoutButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        imageView.layer.masksToBounds = true
+    }
+    
     private func setupUI() {
         
         //IMAGE
@@ -89,6 +93,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
             target: self,
             action: #selector(self.didTapButton))
         
+        logoutButton.accessibilityIdentifier = "logout button"
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
@@ -122,6 +127,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
             completionHandler: { result in
                 switch result {
                 case .success(_):
+                    self.imageView.layer.masksToBounds = true
                     break
                 case .failure(let error):
                     print("Failed to load Image: \(error)")

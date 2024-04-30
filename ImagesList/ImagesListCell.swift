@@ -38,6 +38,7 @@ final class ImagesListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
+        likeButton.accessibilityIdentifier = "like button tapped"
     }
     
     func configure(with photo: Photo) {

@@ -24,7 +24,6 @@ final class ImageFeedUITests: XCTestCase {
         
         let webView = app.webViews["UnsplashWebView"]
         
-        
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
@@ -58,21 +57,34 @@ final class ImageFeedUITests: XCTestCase {
         
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
         
-        cellToLike.buttons["like button off"].tap()
-        cellToLike.buttons["like button on"].tap()
-        
+        cellToLike.buttons["like button tapped"].tap()
+        sleep(2)
+        cellToLike.buttons["like button tapped"].tap()
         sleep(2)
         
-        let image = app.scrollViews.images.element(boundBy: 0)
+        let cellToZoom = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        cellToZoom.tap()
         
-        image.pinch(withScale: 3, velocity: 1)
-        image.pinch(withScale: 0.5, velocity: -1)
+        let imageView = app.images["zoomable image"]
+        XCTAssertTrue(imageView.waitForExistence(timeout: 5), "Failed to find the zoomable image")
+        
+        // Производим зум
+        imageView.pinch(withScale: 2.0, velocity: 1.0) // Например, увеличиваем в 2 раза
+        
+        sleep(2)
         
         let navBackButtonWhiteButton = app.buttons["nav back button white"]
         navBackButtonWhiteButton.tap()
     }
     
     func testProfile() {
+        sleep(3)
+        app.tabBars.buttons.element(boundBy: 1).tap()
         
+        XCTAssertTrue(app.staticTexts["Georgiy Dorgatov"].exists)
+        XCTAssertTrue(app.staticTexts["@giya077"].exists)
+        
+        app.buttons["logout button"].tap()
+        app.alerts["Выход"].buttons["Выход"].tap()
     }
 }

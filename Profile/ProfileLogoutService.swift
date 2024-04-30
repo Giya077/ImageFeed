@@ -22,7 +22,6 @@ final class ProfileLogoutService: ProfileLogoutServiceProtocol {
         resetProfileData()
         clearToken()
         navigateToInitialScreen()
-        
     }
     
     private func cleanCookies() {
