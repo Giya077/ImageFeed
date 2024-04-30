@@ -38,10 +38,6 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         addLogoutButton()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        imageView.layer.masksToBounds = true
-    }
-    
     private func setupUI() {
         
         //IMAGE
@@ -114,19 +110,19 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
               let url = URL(string: profileImageURL)
         else { return }
         
-        let processor = RoundCornerImageProcessor(cornerRadius: 45)
+//        let processor = RoundCornerImageProcessor(cornerRadius: 45)
         
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(
             with: url,
             placeholder: nil,
             options: [
-                .processor(processor),
                 .transition(.fade(0.5))
             ],
             completionHandler: { result in
                 switch result {
                 case .success(_):
+                    self.imageView.layer.cornerRadius = 35
                     self.imageView.layer.masksToBounds = true
                     break
                 case .failure(let error):
