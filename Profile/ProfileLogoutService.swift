@@ -8,7 +8,11 @@
 import Foundation
 import WebKit
 
-final class ProfileLogoutService {
+protocol ProfileLogoutServiceProtocol {
+    func logout()
+}
+
+final class ProfileLogoutService: ProfileLogoutServiceProtocol {
     static let shared = ProfileLogoutService()
     
     private init() { }
@@ -18,7 +22,6 @@ final class ProfileLogoutService {
         resetProfileData()
         clearToken()
         navigateToInitialScreen()
-        
     }
     
     private func cleanCookies() {

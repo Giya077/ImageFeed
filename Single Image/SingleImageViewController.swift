@@ -20,12 +20,17 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("SingleImageViewController loaded")
+        backButton.accessibilityIdentifier = "nav back button white"
+        imageView.accessibilityIdentifier = "zoomable image"
+        print("ImageView accessibility identifier:", imageView.accessibilityIdentifier ?? "No identifier")
         setupScrollView()
         loadFullImage()
         imageView.contentMode = .scaleAspectFit
-        view.addSubview(scrollView)
+        scrollView.delegate = self
         
+        
+        view.addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -58,32 +63,32 @@ final class SingleImageViewController: UIViewController {
         ])
     }
     
+    
     private func setupScrollView() {
         scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        scrollView.delegate = self
+        scrollView.maximumZoomScale = 2.0
 
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(sender:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(doubleTapGesture)
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+              doubleTapGestureRecognizer.numberOfTapsRequired = 2
+              scrollView.addGestureRecognizer(doubleTapGestureRecognizer)
     }
     
-    @objc private func handleDoubleTap(sender: UITapGestureRecognizer) {
-        if scrollView.zoomScale == scrollView.minimumZoomScale {
-            let zoomRect = zoomRectForScale(scale: scrollView.maximumZoomScale, center: sender.location(in: sender.view))
-            scrollView.zoom(to: zoomRect, animated: true)
-        } else {
-            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-        }
-    }
-    
-    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
-        let size = CGSize(width: scrollView.frame.size.width / scale,
-                          height: scrollView.frame.size.height / scale)
-        let origin = CGPoint(x: center.x - size.width / 2,
-                             y: center.y - size.height / 2)
-        return CGRect(origin: origin, size: size)
-    }
+    @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
+         let pointInView = recognizer.location(in: imageView)
+         let zoomScaleFactor: CGFloat = min(scrollView.maximumZoomScale / 2, scrollView.zoomScale * 2)
+         if scrollView.zoomScale != scrollView.minimumZoomScale {
+             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+         } else {
+             let scrollViewSize = scrollView.bounds.size
+             let w = scrollViewSize.width / zoomScaleFactor
+             let h = scrollViewSize.height / zoomScaleFactor
+             let x = pointInView.x - (w / 2.0)
+             let y = pointInView.y - (h / 2.0)
+             
+             let rectToZoomTo = CGRect(x: x, y: y, width: w, height: h)
+             scrollView.zoom(to: rectToZoomTo, animated: true)
+         }
+     }
     
     private func loadFullImage() {
         guard let fullImageURLString = fullImageURL, let fullImageURL = URL(string: fullImageURLString) else {
@@ -101,6 +106,7 @@ final class SingleImageViewController: UIViewController {
             case .success(let imageResult):
                 // Установка изображения и масштабирование в scrollView
                 self.imageView.image = imageResult.image
+//                self.centerImageInScrollView()
                 self.rescaleAndCenterImageInScrollView(image: imageResult.image)
             case .failure:
                 self.showError()
@@ -118,20 +124,24 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
-        let minZoomScale = scrollView.minimumZoomScale
-        let maxZoomScale = scrollView.maximumZoomScale
-        view.layoutIfNeeded()
-        let visibleRectSize = scrollView.bounds.size
-        let imageSize = image.size
-        let hScale = visibleRectSize.width / imageSize.width
-        let vScale = visibleRectSize.height / imageSize.height
-        let scale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
-        scrollView.setZoomScale(scale, animated: false)
-        scrollView.layoutIfNeeded()
-        let newContentSize = scrollView.contentSize
-        let x = (newContentSize.width - visibleRectSize.width) / 2
-        let y = (newContentSize.height - visibleRectSize.height) / 2
-        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+        let imageViewSize = imageView.frame.size
+        let scrollViewSize = scrollView.bounds.size
+
+        let horizontalPadding = max(0, (scrollViewSize.width - imageViewSize.width) / 2)
+        let verticalPadding = max(0, (scrollViewSize.height - imageViewSize.height) / 2)
+
+        // Установим масштабирование изображения
+        let widthScale = scrollViewSize.width / image.size.width
+        let heightScale = scrollViewSize.height / image.size.height
+        let initialScale = min(widthScale, heightScale)
+
+        scrollView.minimumZoomScale = initialScale
+        scrollView.zoomScale = initialScale
+        scrollView.maximumZoomScale = 2.0
+
+//         Поднимаем изображение выше, устанавливая отрицательный отступ вниз
+        let yOffset = max(0, (imageViewSize.height - scrollViewSize.height) / 2)
+        scrollView.contentInset = UIEdgeInsets(top: verticalPadding - yOffset, left: horizontalPadding, bottom: verticalPadding + yOffset, right: horizontalPadding)
     }
     
     @IBAction private func didTapBackButton() {
@@ -157,14 +167,12 @@ extension SingleImageViewController: UIScrollViewDelegate {
     }
     
     private func centerImageInScrollView() {
-        guard let image = imageView.image else { return }
-        
-        _ = imageView.frame.size
+        let imageViewSize = imageView.frame.size
         let scrollViewSize = scrollView.bounds.size
-        
-        let verticalPadding = max(0, (scrollViewSize.height - image.size.height * scrollView.zoomScale) / 2)
-        let horizontalPadding = max(0, (scrollViewSize.width - image.size.width * scrollView.zoomScale) / 2)
-        
+
+        let verticalPadding = max(0, (scrollViewSize.height - imageViewSize.height) / 2)
+        let horizontalPadding = max(0, (scrollViewSize.width - imageViewSize.width) / 2)
+
         scrollView.contentInset = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
     }
 }
