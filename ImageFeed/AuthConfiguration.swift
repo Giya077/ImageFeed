@@ -9,8 +9,8 @@ import Foundation
 
 
 enum Constants {
-    static let accessKey = "wnmabgtUsRiGP9nzEKk9hHIBrRAznuL6o5HRKpPfw8k"
-    static let secretKey = "Qe6Dy9MCXyUz27wuLdGKNFvyxy3Ppc7mmXcA3aGytaM"
+    static let accessKey = ""
+    static let secretKey = ""
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope = "public+read_user+write_likes"
     
